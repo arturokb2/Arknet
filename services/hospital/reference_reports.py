@@ -104,7 +104,7 @@ def get_opers(patient):
     else:
         return None
 
-def get_list_otd(data):
+def get_list_otd(data,ym=None):
     otds_list = []
     for d in data:
         try:
@@ -3571,6 +3571,10 @@ class VaultOtd(AnnualReportABC):
             wb.save(self.path() + f'otd_rep_4_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_4_{self.user.user.id}.xlsx'})
+
+            async_to_sync(get_channel_layer().group_send)(self.user_group_name, {'type': 'download',
+                                                                                 'text': self.path() + f'otd_rep_4_{self.user.user.id}.xlsx'})
+
 
     def oth_5(self,data,otd):
         file = self.is_file('otd_rep_5.xlsx')

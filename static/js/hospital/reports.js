@@ -3368,11 +3368,19 @@ function annual_pr_5_f(type_report) {
     formData.append('type_report', type_report)
     formData.append("date_1", date_1.val())
     formData.append("date_2", date_2.val())
+
+    formData.append("type", 'null')
+    formData.append("n", '4')
+    formData.append('group_p_list', 'vault_otd_rep')
+    formData.append('task_type', 'reports')
+    formData.append('otdel', '')
+
     if (date_1.val() != "" && date_2.val() != "") {
         sendRequest_f(formData)
         report_oth.$data.annual_create = false
         report_oth.$data.annual_shaping = true
     }
+
 }
 
 function annual_pr_6_f(type_report) {

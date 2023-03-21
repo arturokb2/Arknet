@@ -213,7 +213,10 @@ class Reports(Patients):
                     if f_ == False: continue
             if filters.get('otdel_let',None) != None:
                 if filters.get('otdel_let')['otdel_let'] != '':
-                    f_ =  sluchay['sluchay'].otd.naim == filters.get('otdel_let')['otdel_let'] if sluchay['sluchay'].otd != None else False
+                    # f_ =  sluchay['sluchay'].otd.naim == filters.get('otdel_let')['otdel_let'] if sluchay['sluchay'].otd != None else False
+                    otd = sluchay['sluchay'].otd.naim if sluchay['sluchay'].otd != None else ''
+                    otd_y = sluchay['sluchay'].otd_y.naim if sluchay['sluchay'].otd_y != None else ''
+                    f_ = filters.get('otdel_let')['otdel_let'] in [otd,otd_y]
                     if f_ == False: continue
             if filters.get('kod_vra',None) != None:
                 if sluchay['le_vr'] != None:
