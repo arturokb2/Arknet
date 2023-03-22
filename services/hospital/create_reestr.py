@@ -340,14 +340,14 @@ class Create(CreateReestr):
                     com = '1.0'
 
 
-        if pat.sluchay.tip_oms == '1':
-            if pat.sluchay.rslt and pat.sluchay.rslt.id_tip in [102,104,105,107,110]:
-                if pat.sluchay.ksg_osn and pat.sluchay.ksg_osn.ksg in ksg_list:
-                    com = '1.0'
-            else:
-                if pat.le_vr != None and kd <= 3:
-                    if pat.sluchay.ksg_osn and pat.sluchay.ksg_osn.ksg in ksg_list:
-                        com = '1.0'
+        # if pat.sluchay.tip_oms == '1':
+        #     if pat.sluchay.rslt and pat.sluchay.rslt.id_tip in [102,104,105,107,110]:
+        #         if pat.sluchay.ksg_osn and pat.sluchay.ksg_osn.ksg in ksg_list:
+        #             com = '1.0'
+        #     else:
+        #         if pat.le_vr != None and kd <= 3:
+        #             if pat.sluchay.ksg_osn and pat.sluchay.ksg_osn.ksg in ksg_list:
+        #                 com = '1.0'
         return com
     def vb_p_sp(self,pat):
 
