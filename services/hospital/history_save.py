@@ -528,6 +528,8 @@ class Save():
         except:
             sluchay.code_usl_vt = None
 
+        print(sluchay.code_usl_vt )
+
         if sluchay.code_usl_vt == None:
             try:
                 sluchay.code_usl_vt =  Tar_vt.objects.get(kod_stat=history['metod_hmp'],metod__icontains=history['vid_hmp'],mkb__icontains=str(sluchay.dskz.kod).split('.')[0],dateend=None)

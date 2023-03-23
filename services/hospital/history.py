@@ -466,9 +466,9 @@ class History:
         # F.Представитель пациента
 
         if patient.patient_p != None:
-            data['fam_p'] = patient.patient_p.fam_p.upper()
-            data['im_p'] = patient.patient_p.im_p.upper()
-            data['ot_p'] = patient.patient_p.ot_p.upper()
+            data['fam_p'] = str(patient.patient_p.fam_p).upper()
+            data['im_p'] = str(patient.patient_p.im_p).upper()
+            data['ot_p'] = str(patient.patient_p.ot_p).upper()
             data['sex_bol'] = patient.patient_p.pol.polname if patient.patient_p.pol != None else ''
             data['datr_p'] = self.format_date(str(patient.patient_p.datr)) if patient.patient_p.datr != None else ''
             data['mp_roj'] = patient.patient_p.m_roj

@@ -110,8 +110,9 @@ def get_list_otd(data,ym=None):
         try:
             if d.sluchay.otd.naim not in otds_list:
                 otds_list.append(d.sluchay.otd.naim)
-        except:
-            print(d.sluchay.nib)
+        except Exception:
+            otds_list.append(None)
+
 
     otds_sl = []
     try:
@@ -119,11 +120,16 @@ def get_list_otd(data,ym=None):
             temp = [[],[]]
             temp[0].append(o)
             for d in data:
-                if o == d.sluchay.otd.naim:
-                    temp[1].append(d)
+                if d.sluchay.otd:
+                    if o == d.sluchay.otd.naim:
+                        temp[1].append(d)
+                else:
+                    if o == d.sluchay.otd:
+                        temp[1].append(d)
             otds_sl.append(temp)
-    except:
-        pass
+    except Exception as er:
+        print(er)
+
     return otds_sl
 
 
@@ -1373,6 +1379,7 @@ def insert_sheet_a_oth_5(**kwargs):
 
     data = get_list_otd(kwargs['data'])
     data_filter = get_list_otd(kwargs['data_filter'])
+
 
     row = 8
     font = styles.Font(size=14, name='Arial')

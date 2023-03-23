@@ -302,7 +302,9 @@ admin.site.register(UpdatePers)
 admin.site.register(UpdatePersData)
 
 class Tar_vtAdmin(admin.ModelAdmin):
-    search_fields = ('kod_stat','id')
+    search_fields = ('kod_stat','id','kod')
+    list_display = ('id','kod','kod_stat','metod','datebeg')
+
 
 admin.site.register(Tar_vt,Tar_vtAdmin)
 

@@ -1191,7 +1191,7 @@ class Tar_vt(models.Model):
     isf = models.CharField(max_length=10,blank=True,null=True)
     v_tp = models.CharField(max_length=10,blank=True,null=True)
     metod = models.CharField(max_length=100,blank=True,null=True)
-    mkb = models.CharField(max_length=500,blank=True,null=True)
+    mkb = models.CharField(max_length=2500,blank=True,null=True)
     kod_dop = models.CharField(max_length=10,blank=True,null=True)
     otm = models.CharField(max_length=10,blank=True,null=True)
     kod_old = models.CharField(max_length=50,blank=True,null=True)
