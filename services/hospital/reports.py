@@ -346,6 +346,13 @@ class Reports(Patients):
                   f_ =  sluchay['sluchay'].rasxp == '1'
                 else:
                     continue
+            if filters.get('ksg_osn', None) != None:
+                ksg_osn =  filters.get('ksg_osn')['ksg_osn']
+                if sluchay['sluchay'].ksg_osn:
+                    ksg = sluchay['sluchay'].ksg_osn
+                    f_ = ksg.code_usl_kz == ksg_osn
+                else:
+                    continue
             if f_ != False:
                 f.append(sluchay)
 

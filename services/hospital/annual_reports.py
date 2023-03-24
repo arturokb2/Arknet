@@ -1148,7 +1148,8 @@ def insert_sheet_APR_1(**kwargs):
             sl_all.append(rez)
             for v in range(len(rez)):
                 try:
-                    sheet.cell(row=row, column=3+v).value = rez[v] if rez[v] != 0 else None
+                    if v != 15:
+                        sheet.cell(row=row, column=3+v).value = rez[v] if rez[v] != 0 else None
                 except:
                     print(rez)
                 sheet.cell(row=row, column=3+v).font = font
@@ -1173,9 +1174,10 @@ def insert_sheet_APR_1(**kwargs):
                 rez = r.tolist()
                 rez = get_rez_apr_1(rez,False)
                 for r in range(len(rez)):
-                    sheet.cell(row=row, column=3+r).value = rez[r] if rez[r] != 0 else None
-                    sheet.cell(row=row, column=3+r).font = font
-                    sheet.cell(row=row, column=3+r).alignment = styles.Alignment(horizontal="center", vertical="center",wrap_text=True)
+                    if r != 15:
+                        sheet.cell(row=row, column=3+r).value = rez[r] if rez[r] != 0 else None
+                        sheet.cell(row=row, column=3+r).font = font
+                        sheet.cell(row=row, column=3+r).alignment = styles.Alignment(horizontal="center", vertical="center",wrap_text=True)
     else:
         row+=1
         sheet.row_dimensions[row].height = 20
@@ -1192,9 +1194,10 @@ def insert_sheet_APR_1(**kwargs):
         rez = r.tolist()
         rez = get_rez_apr_1(rez,False)
         for r in range(len(rez)):
-            sheet.cell(row=row, column=3+r).value = rez[r] if rez[r] != 0 else None
-            sheet.cell(row=row, column=3+r).font = font
-            sheet.cell(row=row, column=3+r).alignment = styles.Alignment(horizontal="center", vertical="center",wrap_text=True)
+            if r != 15:
+                sheet.cell(row=row, column=3+r).value = rez[r] if rez[r] != 0 else None
+                sheet.cell(row=row, column=3+r).font = font
+                sheet.cell(row=row, column=3+r).alignment = styles.Alignment(horizontal="center", vertical="center",wrap_text=True)
 
 def insert_sheet_APR_2(**kwargs):
     sheet = kwargs['sheet']
@@ -3676,7 +3679,7 @@ def insert_sheet_AN_14_3_3_1(**kwargs):
 
 def get_rez_apr_1(data,d=None):
     if d == None:
-        all_temp = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        all_temp = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         _ = [0,0,0,0,0,0,0,0,0,0]
         for patient in data:
             _[0] += 1
@@ -3708,7 +3711,7 @@ def get_rez_apr_1(data,d=None):
         except ZeroDivisionError:
             all_temp[4] = 0
         try:
-            all_temp[5]= float('{0:.2f}'.format(all_temp[3]/all_temp[2]))
+            all_temp[5]= float('{0:.2f}'.format(_[3]/_[2]))
         except ZeroDivisionError:
             all_temp[5] = 0
 
@@ -3747,6 +3750,7 @@ def get_rez_apr_1(data,d=None):
             all_temp[14]= float('{0:.2f}'.format(_[9]/_[8]))
         except ZeroDivisionError:
             all_temp[14] = 0
+        all_temp[15] = _[3]
 
         # bf = BetterFilter()
         # sp = CountSluchaySpecification() ^ ProfKNSpecification() ^\
@@ -3824,7 +3828,7 @@ def get_rez_apr_1(data,d=None):
 
 
         return all_temp
-    
+
     try:
         data[2] = float('{0:.2f}'.format(data[1]/data[0]))
     except ZeroDivisionError:
@@ -3835,7 +3839,7 @@ def get_rez_apr_1(data,d=None):
     except ZeroDivisionError:
         data[4] = 0
     try:
-        data[5]= float('{0:.2f}'.format(data[5]/data[3]))
+        data[5]= float('{0:.2f}'.format(data[15]/data[3]))
     except ZeroDivisionError:
         data[5] = 0
 
@@ -4699,127 +4703,127 @@ class Annual_13_1_1(AnnualReportABC):
                 year = d.patient_year
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO02_006:
                     ord12['ii1_4']+=1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii1_5']+=1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii1_6']+=1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii1_7']+=1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii1_8']+=1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii1_9']+=1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii1_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO02:
                     ord12['ii2_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii2_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii2_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii2_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii2_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii2_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii2_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO03:
                     ord12['ii3_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii3_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii3_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii3_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii3_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii3_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii3_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO04:
                     ord12['ii4_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii4_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii4_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii4_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii4_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii4_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii4_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO05:
                     ord12['ii5_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii5_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii5_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii5_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii5_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii5_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii5_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO06:
                     ord12['ii6_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii6_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii6_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii6_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii6_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii6_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii6_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO00:
                     ord12['ii7_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii7_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii7_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii7_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii7_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii7_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii7_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO01:
                     ord12['ii8_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii8_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii8_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii8_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii8_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii8_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii8_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO07:
                     ord12['ii9_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['ii9_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['ii9_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['ii9_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['ii9_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['ii9_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['ii9_10'] += 1
@@ -4828,127 +4832,127 @@ class Annual_13_1_1(AnnualReportABC):
                 year = d.patient_year
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO02_006:
                     ord12['iii1_4']+=1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii1_5']+=1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii1_6']+=1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii1_7']+=1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii1_8']+=1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii1_9']+=1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii1_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO02:
                     ord12['iii2_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii2_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii2_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii2_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii2_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii2_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii2_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO03:
                     ord12['iii3_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii3_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii3_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii3_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii3_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii3_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii3_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO04:
                     ord12['iii4_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii4_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii4_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii4_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii4_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii4_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii4_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO05:
                     ord12['iii5_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii5_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii5_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii5_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii5_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii5_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii5_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO06:
                     ord12['iii6_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii6_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii6_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii6_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii6_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii6_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii6_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO00:
                     ord12['iii7_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii7_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii7_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii7_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii7_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii7_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii7_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO01:
                     ord12['iii8_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii8_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii8_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii8_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii8_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii8_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii8_10'] += 1
                 if d.sluchay.dskz and d.sluchay.dskz.kod in nzO07:
                     ord12['iii9_4'] += 1
-                    if 0 <= year < 14:
+                    if 0 <= year <= 14:
                         ord12['iii9_5'] += 1
-                    if 15 < year < 17:
+                    if 15 <= year <= 17:
                         ord12['iii9_6'] += 1
-                    if 18 < year < 44:
+                    if 18 <= year <= 44:
                         ord12['iii9_7'] += 1
-                    if 45 < year < 49:
+                    if 45 <= year <= 49:
                         ord12['iii9_8'] += 1
-                    if 50 < year:
+                    if 50 <= year:
                         ord12['iii9_9'] += 1
                     if d.vb_a.n_ber != None and d.vb_a.n_ber != '' and d.vb_a.n_ber == 1:
                         ord12['iii9_10'] += 1
