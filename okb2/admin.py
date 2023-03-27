@@ -181,6 +181,12 @@ class VraAdmin(admin.ModelAdmin):
                         v.kod_pro = row[18]
                         v.naim_t = row[19]
                         v.save()
+                    else:
+                        if vra_count == 1:
+                            vra = Vra.objects.filter(kod=str(row[0]).strip()).first()
+                            if vra.t005 == '':
+                                vra.t005 = row[4]
+                                vra.save()
                 else:
                     if tmf != row:
                         messages.add_message(request,messages.ERROR,'Файл не соответствует структуре шаблону')

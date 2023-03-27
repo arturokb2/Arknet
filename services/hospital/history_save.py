@@ -1000,6 +1000,9 @@ class Save():
         except:
             sluchay.ksg_sop = None
 
+        print(history['ksg_sop'])
+        print(history['dsc']['kod'])
+
         sluchay.save()
         # else:
             # print(history['ksg_sop'])

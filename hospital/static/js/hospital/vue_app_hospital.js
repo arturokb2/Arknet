@@ -3,6 +3,7 @@ var app = new Vue({
     el: '#app_hospital',
     data: {
         data_ksg: {},
+        error_ksg_sop: false,
         data_ksg2: {},
         list_ds: Array(),
         sprav_list: [],
@@ -947,6 +948,7 @@ var app = new Vue({
                 dsc: $.trim($("#dsc_kod").val()),
                 ksg_sop: this.history.ksg_sop
             }
+
             fetch(`check_ksg_sop/?dsc=${data.dsc}&ksg_sop=${data.ksg_sop}`, {
                 method: 'get',
                 headers: {
@@ -955,7 +957,21 @@ var app = new Vue({
             })
                 .then(response => response.json())
                 .then(rez => {
-                    this.history.ksg_sop_helper = rez.rez
+                    if (rez.rez != null){
+                        this.history.ksg_sop_helper = rez.rez
+                        this.error_ksg_sop = false
+                    }
+                    else{
+                        if (this.history.ksg_sop.length > 0)
+                        {
+                            this.error_ksg_sop = true
+                        }
+                        else{
+                            this.error_ksg_sop = false
+                        }
+
+                    }
+
                 })
 
         },
