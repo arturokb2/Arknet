@@ -368,6 +368,8 @@ def get_rez_rep_5_help(data,rez,nz,t,s):
     for d in data:
         if d.sluchay.dskz:
             ds = d.sluchay.dskz.kod
+            if d.sluchay.dspat:
+                ds = d.sluchay.dspat.kod
             year = d.patient_year
             pol = d.patient.pol.id_pol if d.patient.pol and d.patient.pol.id_pol else None
             if s == True:
@@ -3675,18 +3677,35 @@ class VaultOtd(AnnualReportABC):
             _ = []
 
             for d in data:
-                if d.sluchay.dskz and d.sluchay.dskz.kod in nzI60:
-                    I60.append(d)
-                elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI61:
-                    I61.append(d)
-                elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI63:
-                    I63.append(d)
-                elif d.sluchay.dskz and d.sluchay.dskz.kod in nzG45_46:
-                    G45_46.append(d)
-                elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI67_I69:
-                    I67_I69.append(d)
-                else:
-                    _.append(d)
+                # if d.sluchay.dskz and d.sluchay.dskz.kod in nzI60:
+                #     I60.append(d)
+                # elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI61:
+                #     I61.append(d)
+                # elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI63:
+                #     I63.append(d)
+                # elif d.sluchay.dskz and d.sluchay.dskz.kod in nzG45_46:
+                #     G45_46.append(d)
+                # elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI67_I69:
+                #     I67_I69.append(d)
+                # else:
+                #     _.append(d)
+                if d.sluchay.dskz:
+                    ds = d.sluchay.dskz.kod
+                    if d.sluchay.dspat:
+                        ds = d.sluchay.dspat.kod
+                    if ds in nzI60:
+                        I60.append(d)
+                    elif ds in nzI61:
+                        I61.append(d)
+                    elif ds in nzI63:
+                        I63.append(d)
+                    elif ds in nzG45_46:
+                        G45_46.append(d)
+                    elif ds in nzI67_I69:
+                        I67_I69.append(d)
+                    else:
+                        _.append(d)
+
             I60_data = [0,0,0,0,0,0,0,0,0,0,0,0]
             I61_data = [0,0,0,0,0,0,0,0,0,0,0,0]
             I63_data = [0,0,0,0,0,0,0,0,0,0,0,0]
