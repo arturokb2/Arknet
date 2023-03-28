@@ -3740,9 +3740,9 @@ class VaultOtd(AnnualReportABC):
 
 
             for d in data:
-                if d.sluchay.dskz and d.sluchay.dskz.kod in nzI61:
+                if d.sluchay.dspat and d.sluchay.dspat.kod in nzI61:
                     I61.append(d)
-                elif d.sluchay.dskz and d.sluchay.dskz.kod in nzI63:
+                elif d.sluchay.dspat and d.sluchay.dspat.kod in nzI63:
                     I63.append(d)
                 else:
                     _.append(d)
