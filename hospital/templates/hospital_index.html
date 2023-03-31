@@ -1074,6 +1074,7 @@
                           <option value="a_oth_32">32.Информация токсикол. отделения</option>
                           <option value="a_oth_33">33.Инф-я об услугах ОМС др.регион</option>
                           <option value="a_oth_36">36.Информация по мониторингу ОНМК</option>
+                          <option value="a_oth_37">37.Информация по мониторингу Гериатрия</option>
 
                         </select>
                       </div>
@@ -1625,6 +1626,14 @@
                           <date></date>
                           <div class="text-center" style="margin-bottom: 10px;">
                             <button btn="a_oth_36" type="button" id="create_btn_reports" onclick="create_reports(event)"
+                              class="btn btn-primary btn-lg" style="padding: 0px;">Создать отчет</button>
+                          </div>
+                        </div>
+
+                      <div id="panel_m-37" v-if="panel_m_37">
+                          <date></date>
+                          <div class="text-center" style="margin-bottom: 10px;">
+                            <button btn="a_oth_37" type="button" id="create_btn_reports" onclick="create_reports(event)"
                               class="btn btn-primary btn-lg" style="padding: 0px;">Создать отчет</button>
                           </div>
                         </div>

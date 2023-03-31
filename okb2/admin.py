@@ -133,7 +133,7 @@ class VraForm(forms.Form):
 class VraAdmin(admin.ModelAdmin):
     list_display = ('kod','naim','kod_spec','datebeg','dateend')
     list_filter = ('kod',)
-    search_fields = ('kod','naim')
+    search_fields = ('kod','naim','t005')
     def get_urls(self):
         urls = super().get_urls()
         new_urls = [path('upload_admin/',self.upload),]
@@ -278,7 +278,7 @@ admin.site.register(CJ)
 admin.site.register(V_LGOTY)
 
 class SkomAdmin(admin.ModelAdmin):
-    search_fields = ('id','naim')
+    search_fields = ('id','naim','smo_okato')
 admin.site.register(Skom,SkomAdmin)
 
 admin.site.register(Prpg)

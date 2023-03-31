@@ -439,6 +439,7 @@ let report_oth = new Vue({
         a_oth_32: false,
         a_oth_33: false,
         a_oth_36: false,
+        a_oth_37: false,
 
 
 
@@ -523,6 +524,7 @@ let report_oth = new Vue({
         panel_m_32: false,
         panel_m_33: false,
         panel_m_36: false,
+        panel_m_37: false,
         select_vault_otd_8: false,
         select_vault_otd_9: false
 
@@ -674,6 +676,7 @@ let report_oth = new Vue({
             this.a_oth_32 = false
             this.a_oth_33 = false
             this.a_oth_36 = false
+            this.a_oth_37 = false
 
 
             this.statistics_reports = false
@@ -793,6 +796,7 @@ let report_oth = new Vue({
             this.panel_m_32 = false
             this.panel_m_33 = false
             this.panel_m_36 = false
+            this.panel_m_37 = false
         },
         annual_bol: function () {
             this.init_oth()
@@ -1061,6 +1065,10 @@ let report_oth = new Vue({
         annual_oth_36: function () {
             this.init_oth()
             this.a_oth_36 = true
+        },
+        annual_oth_37: function () {
+            this.init_oth()
+            this.a_oth_37 = true
         },
         statistics_rep: function () {
 
@@ -1470,6 +1478,9 @@ function onchange_group_p_list_a_oth() {
     }
     else if (val == 'a_oth_36') {
         report_oth.$data.panel_m_36 = true
+    }
+    else if (val == 'a_oth_37') {
+        report_oth.$data.panel_m_37 = true
     }
 
 }
@@ -2024,6 +2035,7 @@ function create_reports(event) {
     else if (type_report == 'a_oth_32') { a_oth_32_f(type_report) }
     else if (type_report == 'a_oth_33') { a_oth_33_f(type_report) }
     else if (type_report == 'a_oth_36') { a_oth_36_f(type_report) }
+    else if (type_report == 'a_oth_37') { a_oth_37_f(type_report) }
     else if (type_report == 'annual_13_1_1') { annual_13_1_1_f(type_report) }
     else if (type_report == 'annual_13_1_2') { annual_13_1_2_f(type_report) }
     else if (type_report == 'annual_13_1_3') { annual_13_1_3_f(type_report) }
@@ -2819,6 +2831,20 @@ function a_oth_33_f(type_report) {
 function a_oth_36_f(type_report) {
     let date_1 = $("#panel_m-36").find("#date1")
     let date_2 = $("#panel_m-36").find("#date2")
+
+    var formData = new FormData()
+    formData.append('task_type', 'reports')
+    formData.append('type_report', type_report)
+    formData.append("date_1", date_1.val())
+    formData.append("date_2", date_2.val())
+    if (date_1.val() != "" && date_2.val() != "") {
+        sendRequest_f(formData)
+    }
+}
+
+function a_oth_37_f(type_report) {
+    let date_1 = $("#panel_m-37").find("#date1")
+    let date_2 = $("#panel_m-37").find("#date2")
 
     var formData = new FormData()
     formData.append('task_type', 'reports')

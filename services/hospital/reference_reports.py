@@ -2512,8 +2512,710 @@ def insert_sheet_a_oth_36(**kwargs):
         for n,res in enumerate(result):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
 
+def insert_sheet_a_oth_37(**kwargs):
+    sheet = kwargs['sheet'][0]
+    sheet1 = kwargs['sheet'][1]
+    name = kwargs['name']
+    date_1 = kwargs['date_1']
+    date_2 = kwargs['date_2']
+
+    sheet.cell(row=3, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")}'
+    sheet.cell(row=5, column=1).value = f'{str(name).capitalize()}'
+
+    sheet1.cell(row=3, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")}'
+    sheet1.cell(row=5, column=1).value = f'{str(name).capitalize()}'
+
+    data1_w1_60_64 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w1_65_69 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w1_70_74 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w1_75_79 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w1_80_84 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w1_85 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    data1_w1 = [data1_w1_60_64,data1_w1_65_69,data1_w1_70_74,data1_w1_75_79,data1_w1_80_84,data1_w1_85]
+
+    data1_w2_60_64 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w2_65_69 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w2_70_74 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w2_75_79 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w2_80_84 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_w2_85 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    data1_w2 = [data1_w2_60_64,data1_w2_65_69,data1_w2_70_74,data1_w2_75_79,data1_w2_80_84,data1_w2_85]
+
+    data1_all_60_64 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_all_65_69 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_all_70_74 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_all_75_79 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_all_80_84 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    data1_all_85 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    data1_all = [data1_all_60_64,data1_all_65_69,data1_all_70_74,data1_all_75_79,data1_all_80_84,data1_all_85]
+
+    data = kwargs['data']
+    for d in data:
+        if d.sluchay.dskz:
+            if d.sluchay.dskz.kod == 'S72.00':
+                vrez = d.sluchay.vrez.kod if d.sluchay.vrez else None
+                pol = d.patient.pol.id_pol if d.patient.pol else None
+                year = d.patient_year
+                oper = get_pop_oper(d)
+                oper_kod = oper.kod_op.kod if oper and oper.kod_op else None
+
+                try:
+                    day_oper = (oper.dato - d.sluchay.datp).days
+                except AttributeError:
+                    day_oper = 0
+
+                if 60 <= year <= 64:
+                    data1_all_60_64[0] += 1
+                    if vrez in [1,2,3,4,5,6]:
+                        data1_all_60_64[1] += 1
+                    elif vrez in [7,8,9]:
+                        data1_all_60_64[2] +=1
+                    elif vrez in [11,12]:
+                        data1_all_60_64[3] +=1
+                    else:
+                        if vrez != None:
+                            data1_all_60_64[4] +=1
+                    if oper != None:
+                        data1_all_60_64[5] += 1
+                        if day_oper == 2:
+                            data1_all_60_64[6] += 1
+                        elif 2 <= day_oper <= 3:
+                            data1_all_60_64[7] += 1
+                        elif 3 < day_oper:
+                            data1_all_60_64[8] += 1
+                        if oper_kod in ['A16.03.026.004','A16.03.026.003','A16.03.022.006']:
+                            data1_all_60_64[9] += 1
+                        elif oper_kod in ['A16.04.021.004','A16.04.021.001']:
+                            data1_all_60_64[10] += 1
+
+                elif 65 <= year <= 69:
+                    data1_all_65_69[0] += 1
+                    if vrez in [1, 2, 3, 4, 5, 6]:
+                        data1_all_65_69[1] +=1
+                    elif vrez in [7, 8, 9]:
+                        data1_all_65_69[2] += 1
+                    elif vrez in [11, 12]:
+                        data1_all_65_69[3] += 1
+                    else:
+                        if vrez != None:
+                            data1_all_65_69[4] +=1
+                    if oper != None:
+                        data1_all_65_69[5] += 1
+                        if day_oper == 2:
+                            data1_all_65_69[6] += 1
+                        elif 2 <= day_oper <= 3:
+                            data1_all_65_69[7] += 1
+                        elif 3 < day_oper:
+                            data1_all_65_69[8] += 1
+                        if oper_kod in ['A16.03.026.004','A16.03.026.003','A16.03.022.006']:
+                            data1_all_65_69[9] += 1
+                        elif oper_kod in ['A16.04.021.004','A16.04.021.001']:
+                            data1_all_65_69[10] += 1
+                elif 70 <= year <= 74:
+                    data1_all_70_74[0] += 1
+                    if vrez in [1, 2, 3, 4, 5, 6]:
+                        data1_all_70_74[1] +=1
+                    elif vrez in [7, 8, 9]:
+                        data1_all_70_74[2] += 1
+                    elif vrez in [11, 12]:
+                        data1_all_70_74[3] += 1
+                    else:
+                        if vrez != None:
+                            data1_all_70_74[4] +=1
+                    if oper != None:
+                        data1_all_70_74[5] += 1
+                        if day_oper == 2:
+                            data1_all_70_74[6] += 1
+                        elif 2 <= day_oper <= 3:
+                            data1_all_70_74[7] += 1
+                        elif 3 < day_oper:
+                            data1_all_70_74[8] += 1
+                        if oper_kod in ['A16.03.026.004','A16.03.026.003','A16.03.022.006']:
+                            data1_all_70_74[9] += 1
+                        elif oper_kod in ['A16.04.021.004','A16.04.021.001']:
+                            data1_all_70_74[10] += 1
+                elif 75 <= year <= 79:
+                    data1_all_75_79[0] += 1
+                    if vrez in [1, 2, 3, 4, 5, 6]:
+                        data1_all_75_79[1] += 1
+                    elif vrez in [7, 8, 9]:
+                        data1_all_75_79[2] += 1
+                    elif vrez in [11, 12]:
+                        data1_all_75_79[3] += 1
+                    else:
+                        if vrez != None:
+                            data1_all_75_79[4] +=1
+                    if oper != None:
+                        data1_all_75_79[5] += 1
+                        if day_oper == 2:
+                            data1_all_75_79[6] += 1
+                        elif 2 <= day_oper <= 3:
+                            data1_all_75_79[7] += 1
+                        elif 3 < day_oper:
+                            data1_all_75_79[8] += 1
+                        if oper_kod in ['A16.03.026.004','A16.03.026.003','A16.03.022.006']:
+                            data1_all_75_79[9] += 1
+                        elif oper_kod in ['A16.04.021.004','A16.04.021.001']:
+                            data1_all_75_79[10] += 1
+                elif 80 <= year <= 84:
+                    data1_all_80_84[0] += 1
+                    if vrez in [1, 2, 3, 4, 5, 6]:
+                        data1_all_80_84[1] +=1
+                    elif vrez in [7, 8, 9]:
+                        data1_all_80_84[2] += 1
+                    elif vrez in [11, 12]:
+                        data1_all_80_84[3] += 1
+                    else:
+                        if vrez != None:
+                            data1_all_80_84[4] +=1
+                    if oper != None:
+                        data1_all_80_84[5] += 1
+                        if day_oper == 2:
+                            data1_all_80_84[6] += 1
+                        elif 2 <= day_oper <= 3:
+                            data1_all_80_84[7] += 1
+                        elif 3 < day_oper:
+                            data1_all_80_84[8] += 1
+                        if oper_kod in ['A16.03.026.004','A16.03.026.003','A16.03.022.006']:
+                            data1_all_80_84[9] += 1
+                        elif oper_kod in ['A16.04.021.004','A16.04.021.001']:
+                            data1_all_80_84[10] += 1
+                elif 85 <= year:
+                    data1_all_85[0] += 1
+                    if vrez in [1, 2, 3, 4, 5, 6]:
+                        data1_all_85[1] +=1
+                    elif vrez in [7, 8, 9]:
+                        data1_all_85[2] += 1
+                    elif vrez in [11, 12]:
+                        data1_all_85[3] += 1
+                    else:
+                        if vrez != None:
+                            data1_all_85[4] +=1
+                    if oper != None:
+                        data1_all_85[5] += 1
+                        if day_oper == 2:
+                            data1_all_85[6] += 1
+                        elif 2 <= day_oper <= 3:
+                            data1_all_85[7] += 1
+                        elif 3 < day_oper:
+                            data1_all_85[8] += 1
+                        if oper_kod in ['A16.03.026.004','A16.03.026.003','A16.03.022.006']:
+                            data1_all_85[9] += 1
+                        elif oper_kod in ['A16.04.021.004','A16.04.021.001']:
+                            data1_all_85[10] += 1
+
+                if pol == 1:
+                    if 60 <= year <= 64:
+                        data1_w1_60_64[0]+=1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w1_60_64[1]+=1
+                        elif vrez in [7, 8, 9]:
+                            data1_w1_60_64[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w1_60_64[3] += 1
+                        else:
+                            if vrez != None:
+                                data1_w1_60_64[4] += 1
+                        if oper != None:
+                            data1_w1_60_64[5] += 1
+                            if day_oper == 2:
+                                data1_w1_60_64[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w1_60_64[7] += 1
+                            elif 3 < day_oper:
+                                data1_w1_60_64[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w1_60_64[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w1_60_64[10] += 1
+                    elif 65 <= year <= 69:
+                        data1_w1_65_69[0]+=1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w1_65_69[1] += 1
+                        elif vrez in [7, 8, 9]:
+                            data1_w1_65_69[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w1_65_69[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w1_65_69[4] += 1
+                        if oper != None:
+                            data1_w1_65_69[5] += 1
+                            if day_oper == 2:
+                                data1_w1_65_69[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w1_65_69[7] += 1
+                            elif 3 < day_oper:
+                                data1_w1_65_69[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w1_65_69[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w1_65_69[10] += 1
+                    elif 70 <= year <= 74:
+                        data1_w1_70_74[0]+=1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w1_70_74[1] += 1
+                        elif vrez in [7, 8, 9]:
+                            data1_w1_70_74[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w1_70_74[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w1_70_74[4] += 1
+                        if oper != None:
+                            data1_w1_70_74[5] += 1
+                            if day_oper == 2:
+                                data1_w1_70_74[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w1_70_74[7] += 1
+                            elif 3 < day_oper:
+                                data1_w1_70_74[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w1_70_74[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w1_70_74[10] += 1
+                    elif 75 <= year <= 79:
+                        data1_w1_75_79[0]+=1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w1_75_79[1] += 1
+                        elif vrez in [7, 8, 9]:
+                            data1_w1_75_79[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w1_75_79[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w1_75_79[4] += 1
+                        if oper != None:
+                            data1_w1_75_79[5] += 1
+                            if day_oper == 2:
+                                data1_w1_75_79[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w1_75_79[7] += 1
+                            elif 3 < day_oper:
+                                data1_w1_75_79[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w1_75_79[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w1_75_79[10] += 1
+                    elif 80 <= year <= 84:
+                        data1_w1_80_84[0]+=1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w1_80_84[1] += 1
+                        elif vrez in [7, 8, 9]:
+                            data1_w1_80_84[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w1_80_84[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w1_80_84[4] += 1
+                        if oper != None:
+                            data1_w1_80_84[5] += 1
+                            if day_oper == 2:
+                                data1_w1_80_84[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w1_80_84[7] += 1
+                            elif 3 < day_oper:
+                                data1_w1_80_84[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w1_80_84[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w1_80_84[10] += 1
+                    elif 85 <= year:
+                        data1_w1_85[0]+=1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w1_85[1]+=1
+                        elif vrez in [7, 8, 9]:
+                            data1_w1_85[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w1_85[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w1_85[4] += 1
+                        if oper != None:
+                            data1_w1_85[5] += 1
+                            if day_oper == 2:
+                                data1_w1_85[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w1_85[7] += 1
+                            elif 3 < day_oper:
+                                data1_w1_85[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w1_85[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w1_85[10] += 1
+                else:
+                    if 60 <= year <= 64:
+                        data1_w2_60_64[0] += 1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w2_60_64[1] +=1
+                        elif vrez in [7, 8, 9]:
+                            data1_w2_60_64[2] +=1
+                        elif vrez in [11, 12]:
+                            data1_w2_60_64[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w2_60_64[4] += 1
+                        if oper != None:
+                            data1_w2_60_64[5] += 1
+                            if day_oper == 2:
+                                data1_w2_60_64[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w2_60_64[7] += 1
+                            elif 3 < day_oper:
+                                data1_w2_60_64[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w2_60_64[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w2_60_64[10] += 1
+                    elif 65 <= year <= 69:
+                        data1_w2_65_69[0] += 1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w2_65_69[1] +=1
+                        elif vrez in [7, 8, 9]:
+                            data1_w2_65_69[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w2_65_69[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w2_65_69[4] += 1
+                        if oper != None:
+                            data1_w2_65_69[5] += 1
+                            if day_oper == 2:
+                                data1_w2_65_69[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w2_65_69[7] += 1
+                            elif 3 < day_oper:
+                                data1_w2_65_69[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w2_65_69[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w2_65_69[10] += 1
+                    elif 70 <= year <= 74:
+                        data1_w2_70_74[0] += 1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w2_70_74[1] +=1
+                        elif vrez in [7, 8, 9]:
+                            data1_w2_70_74[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w2_70_74[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w2_70_74[4] += 1
+                        if oper != None:
+                            data1_w2_70_74[5] += 1
+                            if day_oper == 2:
+                                data1_w2_70_74[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w2_70_74[7] += 1
+                            elif 3 < day_oper:
+                                data1_w2_70_74[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w2_70_74[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w2_70_74[10] += 1
+                    elif 75 <= year <= 79:
+                        data1_w2_75_79[0] += 1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w2_75_79[1] +=1
+                        elif vrez in [7, 8, 9]:
+                            data1_w2_75_79[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w2_75_79[3] += 1
+                        else:
+                            if vrez != None:
+                                data1_w2_75_79[4] += 1
+                        if oper != None:
+                            data1_w2_75_79[5] += 1
+                            if day_oper == 2:
+                                data1_w2_75_79[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w2_75_79[7] += 1
+                            elif 3 < day_oper:
+                                data1_w2_75_79[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w2_75_79[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w2_75_79[10] += 1
+                    elif 80 <= year <= 84:
+                        data1_w2_80_84[0] += 1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w2_80_84[1] += 1
+                        elif vrez in [7, 8, 9]:
+                            data1_w2_80_84[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w2_80_84[3] += 1
+                        else:
+                            if vrez != None:
+                                data1_w2_80_84[4] += 1
+                        if oper != None:
+                            data1_w2_80_84[5] += 1
+                            if day_oper == 2:
+                                data1_w2_80_84[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w2_80_84[7] += 1
+                            elif 3 < day_oper:
+                                data1_w2_80_84[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w2_80_84[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w2_80_84[10] += 1
+                    elif 85 <= year:
+                        data1_w2_85[0] += 1
+                        if vrez in [1, 2, 3, 4, 5, 6]:
+                            data1_w2_85[1] += 1
+                        elif vrez in [7, 8, 9]:
+                            data1_w2_85[2] += 1
+                        elif vrez in [11, 12]:
+                            data1_w2_85[3] +=1
+                        else:
+                            if vrez != None:
+                                data1_w2_85[4] += 1
+                        if oper != None:
+                            data1_w2_85[5] += 1
+                            if day_oper == 2:
+                                data1_w2_85[6] += 1
+                            elif 2 <= day_oper <= 3:
+                                data1_w2_85[7] += 1
+                            elif 3 < day_oper:
+                                data1_w2_85[8] += 1
+                            if oper_kod in ['A16.03.026.004', 'A16.03.026.003', 'A16.03.022.006']:
+                                data1_w2_85[9] += 1
+                            elif oper_kod in ['A16.04.021.004', 'A16.04.021.001']:
+                                data1_w2_85[10] += 1
+    row = 10
+    for dat in data1_w2:
+        row +=1
+        for n,res in enumerate(dat):
+            sheet.cell(row=row, column=4+n).value = res if res != 0 else None
+    for dat in data1_w1:
+        row += 1
+        for n, res in enumerate(dat):
+            sheet.cell(row=row, column=4 + n).value = res if res != 0 else None
+
+    for dat in data1_all:
+        row += 1
+        for n, res in enumerate(dat):
+            sheet.cell(row=row, column=4 + n).value = res if res != 0 else None
+
+    data2_all_60_64 = [0,0,0,0]
+    data2_all_65_69 = [0,0,0,0]
+    data2_all_70_74 = [0,0,0,0]
+    data2_all_75_79 = [0,0,0,0]
+    data2_all_80_84 = [0,0,0,0]
+    data2_all_85 = [0,0,0,0]
+    data2_all = [data2_all_60_64,data2_all_65_69,data2_all_70_74,data2_all_75_79,data2_all_80_84,data2_all_85]
+
+    data2_ws1_60_64 = [0, 0, 0, 0]
+    data2_ws1_65_69 = [0, 0, 0, 0]
+    data2_ws1_70_74 = [0, 0, 0, 0]
+    data2_ws1_75_79 = [0, 0, 0, 0]
+    data2_ws1_80_84 = [0, 0, 0, 0]
+    data2_ws1_85 = [0, 0, 0, 0]
+    data2_ws1_all = [data2_ws1_60_64,data2_ws1_65_69,data2_ws1_70_74,data2_ws1_75_79,data2_ws1_80_84,data2_ws1_85]
+
+    data2_ws2_60_64 = [0, 0, 0, 0]
+    data2_ws2_65_69 = [0, 0, 0, 0]
+    data2_ws2_70_74 = [0, 0, 0, 0]
+    data2_ws2_75_79 = [0, 0, 0, 0]
+    data2_ws2_80_84 = [0, 0, 0, 0]
+    data2_ws2_85 = [0, 0, 0, 0]
+    data2_ws2_all = [data2_ws2_60_64,data2_ws2_65_69,data2_ws2_70_74,data2_ws2_75_79,data2_ws2_80_84,data2_ws2_85]
+
+    for d in data:
+        if d.sluchay.dskz:
+            if d.sluchay.dskz.kod == 'S72.00':
+                vrez = d.sluchay.vrez.kod if d.sluchay.vrez else None
+                pol = d.patient.pol.id_pol if d.patient.pol else None
+                year = d.patient_year
+                oper = get_pop_oper(d)
+                try:
+                    time_oper = (oper.dato - d.sluchay.datp).days
+                except AttributeError:
+                    time_oper = 0
+                time_oper = (time_oper + 1)* 24
+                kd = d.le_vr.kd if d.le_vr and d.le_vr.kd != None and d.le_vr.kd != '' else 0
 
 
+                if 60 <= year <= 64:
+                    data2_all_60_64[3] += 1
+                    data2_all_60_64[0] += time_oper
+                    data2_all_60_64[1] += kd
+                    if oper == None:
+                        data2_all_60_64[2] += 1
+                elif 65 <= year <= 69:
+                    data2_all_65_69[3] += 1
+                    data2_all_65_69[0] += time_oper
+                    data2_all_65_69[1] += kd
+                    if oper == None:
+                        data2_all_65_69[2] += 1
+                elif 70 <= year <= 74:
+                    data2_all_70_74[3] += 1
+                    data2_all_70_74[0] += time_oper
+                    data2_all_70_74[1] += kd
+                    if oper == None:
+                        data2_all_70_74[2] += 1
+                elif 75 <= year <= 79:
+                    data2_all_75_79[3] += 1
+                    data2_all_75_79[0] += time_oper
+                    data2_all_75_79[1] += kd
+                    if oper == None:
+                        data2_all_75_79[2] += 1
+                elif 80 <= year <= 84:
+                    data2_all_80_84[3] += 1
+                    data2_all_80_84[0] += time_oper
+                    data2_all_80_84[1] += kd
+                    if oper == None:
+                        data2_all_80_84[2] += 1
+                elif 85 <= year:
+                    data2_all_85[3] += 1
+                    data2_all_85[0] += time_oper
+                    data2_all_85[1] += kd
+                    if oper == None:
+                        data2_all_85[2] += 1
+
+                if pol == 1:
+                    if 60 <= year <= 64:
+                        data2_ws1_60_64[3] += 1
+                        data2_ws1_60_64[0] += time_oper
+                        data2_ws1_60_64[1] += kd
+                        if oper == None:
+                            data2_ws1_60_64[2] += 1
+                    elif 65 <= year <= 69:
+                        data2_ws1_65_69[3] += 1
+                        data2_ws1_65_69[0] += time_oper
+                        data2_ws1_65_69[1] += kd
+                        if oper == None:
+                            data2_ws1_65_69[2] += 1
+                    elif 70 <= year <= 74:
+                        data2_ws1_70_74[3] += 1
+                        data2_ws1_70_74[0] += time_oper
+                        data2_ws1_70_74[1] += kd
+                        if oper == None:
+                            data2_ws1_70_74[2] += 1
+                    elif 75 <= year <= 79:
+                        data2_ws1_75_79[3] += 1
+                        data2_ws1_75_79[0] += time_oper
+                        data2_ws1_75_79[1] += kd
+                        if oper == None:
+                            data2_ws1_75_79[2] += 1
+                    elif 80 <= year <= 84:
+                        data2_ws1_80_84[3] += 1
+                        data2_ws1_80_84[0] += time_oper
+                        data2_ws1_80_84[1] += kd
+                        if oper == None:
+                            data2_ws1_80_84[2] += 1
+                    elif 85 <= year:
+                        data2_ws1_85[3] += 1
+                        data2_ws1_85[0] += time_oper
+                        data2_ws1_85[1] += kd
+                        if oper == None:
+                            data2_ws1_85[2] += 1
+                else:
+                    if 60 <= year <= 64:
+                        data2_ws2_60_64[3] += 1
+                        data2_ws2_60_64[0] += time_oper
+                        data2_ws2_60_64[1] += kd
+                        if oper == None:
+                            data2_ws2_60_64[2] += 1
+                    elif 65 <= year <= 69:
+                        data2_ws2_65_69[3] += 1
+                        data2_ws2_65_69[0] += time_oper
+                        data2_ws2_65_69[1] += kd
+                        if oper == None:
+                            data2_ws2_65_69[2] += 1
+                    elif 70 <= year <= 74:
+                        data2_ws2_70_74[3] += 1
+                        data2_ws2_70_74[0] += time_oper
+                        data2_ws2_70_74[1] += kd
+                        if oper == None:
+                            data2_ws2_70_74[2] += 1
+                    elif 75 <= year <= 79:
+                        data2_ws2_75_79[3] += 1
+                        data2_ws2_75_79[0] += time_oper
+                        data2_ws2_75_79[1] += kd
+                        if oper == None:
+                            data2_ws2_75_79[2] += 1
+                    elif 80 <= year <= 84:
+                        data2_ws2_80_84[3] += 1
+                        data2_ws2_80_84[0] += time_oper
+                        data2_ws2_80_84[1] += kd
+                        if oper == None:
+                            data2_ws2_80_84[2] += 1
+                    elif 85 <= year:
+                        data2_ws2_85[3] += 1
+                        data2_ws2_85[0] += time_oper
+                        data2_ws2_85[1] += kd
+                        if oper == None:
+                            data2_ws2_85[2] += 1
+    row = 11
+    for dat in data2_ws2_all:
+        row += 1
+        for n, res in enumerate(dat):
+            if n == 0:
+                try:
+                    res = float('{0:.2f}'.format(dat[0]/dat[3]))
+                except:
+                    res = 0
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+            elif n == 1:
+                try:
+                    res = float('{0:.2f}'.format(dat[1]/dat[3]))
+                except:
+                    res = 0
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+                sheet1.cell(row=row, column=9).value = res if res != 0 else None
+            elif n == 2:
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+                sheet1.cell(row=row, column=8).value = res if res != 0 else None
+            else:
+                continue
+
+    for dat in data2_ws1_all:
+        row += 1
+        for n, res in enumerate(dat):
+            if n == 0:
+                try:
+                    res = float('{0:.2f}'.format(dat[0]/dat[3]))
+                except:
+                    res = 0
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+            elif n == 1:
+                try:
+                    res = float('{0:.2f}'.format(dat[1]/dat[3]))
+                except:
+                    res = 0
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+                sheet1.cell(row=row, column=9).value = res if res != 0 else None
+            elif n == 2:
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+                sheet1.cell(row=row, column=8).value = res if res != 0 else None
+            else:
+                continue
+
+    for dat in data2_all:
+        row += 1
+        for n, res in enumerate(dat):
+            if n == 0:
+                try:
+                    res = float('{0:.2f}'.format(dat[0]/dat[3]))
+                except:
+                    res = 0
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+            elif n == 1:
+                try:
+                    res = float('{0:.2f}'.format(dat[1]/dat[3]))
+                except:
+                    res = 0
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+                sheet1.cell(row=row, column=9).value = res if res != 0 else None
+            elif n == 2:
+                sheet1.cell(row=row, column=4 + n).value = res if res != 0 else None
+                sheet1.cell(row=row, column=8).value = res if res != 0 else None
+            else:
+                continue
 def rez_oth_a_oth_29(data,all=None):
     rez = [0,0,0,0]
     for d in data:
@@ -3141,10 +3843,12 @@ class VaultOtd(AnnualReportABC):
                 goc_pl_count=0
 
                 for d in data:
+
                     if self.date_1 <= d.sluchay.datp <= self.date_2:
                         datp_count+=1
                     if self.date_1 <= d.sluchay.datv <= self.date_2:
                         datv_count+=1
+
                     if d.sluchay.rslt and  d.sluchay.rslt.id_tip in [105,106]:
                         rslt_umer+=1
                     # if d.sluchay.otd_y and d.sluchay.otd_y.
@@ -4613,9 +5317,30 @@ class AOth36(AnnualReportABC):
                                                            }
                                                           )
 
-
-
-
+class AOth37(AnnualReportABC):
+    def __init__(self,user,request):
+        super().__init__(user, request)
+        self.user_group_name = 'hospital_reports_%s' % user
+    def create(self):
+        file = self.is_file('a_oth_37.xlsx')
+        if file:
+            wb = load_workbook(file)
+            sheet=wb.get_sheet_by_name('Лист1')
+            sheet1=wb.get_sheet_by_name('Лист2')
+            os.remove(file)
+            patients = PatientsData(self.date_1, self.date_2, self.user)
+            patients.sluchays()
+            dic = dict([('sheet', [sheet, sheet1]), ('data', patients.patients), ('name', self.user.statistics_type.name),
+                        ('date_1', self.date_1), ('date_2', self.date_2)])
+            insert_sheet_a_oth_37(**dic)
+            wb.save(self.path() + f'a_oth_37_{self.user.user.id}.xlsx')
+            async_to_sync(get_channel_layer().group_send)(self.user_group_name,
+                                                          {'type': 'report_group_data', 'text': 'Отчет cфромирован'})
+            async_to_sync(get_channel_layer().group_send)(self.user_group_name,
+                                                          {'type': 'download_a_oth',
+                                                           'text': self.path() + f'a_oth_37_{self.user.user.id}.xlsx'
+                                                           }
+                                                          )
 
 
 
@@ -4824,4 +5549,7 @@ def ReferenceReport(user,request):
         report.create()
     elif type_fun == 'a_oth_36':
         report = AOth36(user,request)
+        report.create()
+    elif type_fun == 'a_oth_37':
+        report = AOth37(user,request)
         report.create()

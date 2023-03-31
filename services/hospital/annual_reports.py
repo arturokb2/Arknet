@@ -634,75 +634,238 @@ def insert_sheet_AN_13_1_4(**kwargs):
     date_1 = kwargs['date_1']
     date_2 = kwargs['date_2']
     data = kwargs['data']
-    ds_O04 = []
+
+
+    nzO2_6 = list(Ds.objects.values('kod').filter(kod__range=('O02', 'O06.9')))
+    nzO2_6 = [k['kod'] for k in nzO2_6]
+
+    # ds_O04 = []
     nzO04 = list(Ds.objects.values('kod').filter(kod__range=('O04', 'O04.9')))
     nzO04 = [k['kod'] for k in nzO04]
 
-    ds_O02_009 = []
-    nzO02_009 = list(Ds.objects.values('kod').filter(kod__range=('O02', 'O09.9')))
-    nzO02_009 = [k['kod'] for k in nzO02_009]
-
-
-    for d in data:
-        if d.sluchay.dskz and d.sluchay.dskz.kod in nzO04:
-            ds_O04.append(d)
-
-
-    for d in data:
-        if d.sluchay.dskz and d.sluchay.dskz.kod in nzO02_009:
-            ds_O02_009.append(d)
-
-
-    # n1 = dict(all_=len(kwargs['list_vb_a']),up_to_12=0,from_12_to_22=0,pregnancy_n1=0,pregnancy_n2=0,pregnancy_n3=0)
-    # n1_1 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n1_2 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n1_3 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n2 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n3 = dict(all_=len(kwargs['list_dskz_O']), up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n3_1 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n3_2_1 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n3_2_2 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
-    # n3_2_3 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    nzO03 = list(Ds.objects.values('kod').filter(kod__range=('O03', 'O03.9')))
+    nzO03 = [k['kod'] for k in nzO03]
+    #
+    # ds_O02_009 = []
+    # nzO02_009 = list(Ds.objects.values('kod').filter(kod__range=('O02', 'O09.9')))
+    # nzO02_009 = [k['kod'] for k in nzO02_009]
     #
     #
-    # for v in kwargs['list_vb_a']:
-    #     n1['up_to_12'] += 1 if v.vb_a.srber and  v.vb_a.srber < 12 else 0
-    #     n1['from_12_to_22'] += 1 if v.vb_a.srber and   12 < v.vb_a.srber < 22 else 0
-    #     n1['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
-    #     n1['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
-    #     n1['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+    # for d in data:
+    #     if d.sluchay.dskz and d.sluchay.dskz.kod in nzO04:
+    #         ds_O04.append(d)
     #
-    #     if v.vb_a.pria and v.vb_a.pria.kod == 1:
-    #         n1_1['all_'] += 1
-    #         n1_1['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
-    #         n1_1['from_12_to_22'] += 1 if v.vb_a.srber and 12 < v.vb_a.srber < 22 else 0
-    #         n1_1['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
-    #         n1_1['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
-    #         n1_1['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
     #
-    #     if v.vb_a.pria and v.vb_a.pria.kod == 2:
-    #         n1_2['all_'] += 1
-    #         n1_2['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
-    #         n1_2['from_12_to_22'] += 1 if v.vb_a.srber and 12 < v.vb_a.srber < 22 else 0
-    #         n1_2['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
-    #         n1_2['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
-    #         n1_2['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
-    #
-    # for d in kwargs['list_dskz_O']:
-    #     n3['up_to_12'] += 1 if d.vb_a.srber and d.vb_a.srber < 12 else 0
-    #     n3['from_12_to_22'] += 1 if d.vb_a.srber and 12 < d.vb_a.srber < 22 else 0
-    #     n3['pregnancy_n1'] += 1 if d.vb_a.n_ber and d.vb_a.n_ber == 1 else 0
-    #     n3['pregnancy_n2'] += 1 if d.vb_a.n_ber and d.vb_a.n_ber == 2 else 0
-    #     n3['pregnancy_n3'] += 1 if d.vb_a.n_ber and d.vb_a.n_ber >= 3 else 0
-    #
+    # for d in data:
+    #     if d.sluchay.dskz and d.sluchay.dskz.kod in nzO02_009:
+    #         ds_O02_009.append(d)
+
+
+    n1 = dict(all_=0,up_to_12=0,from_12_to_22=0,pregnancy_n1=0,pregnancy_n2=0,pregnancy_n3=0)
+    n1_1 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n1_2 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n1_3 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n2 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n3 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n3_1 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n3_2_1 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+    n3_2_2 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0,pregnancy_n3=0)
+
+
+    n3_2_4 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0, pregnancy_n3=0)
+    n3_2_5 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0, pregnancy_n3=0)
+    n3_2_6 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0, pregnancy_n3=0)
+    n3_2_7 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0, pregnancy_n3=0)
+    n3_2_8 = dict(all_=0, up_to_12=0, from_12_to_22=0, pregnancy_n1=0, pregnancy_n2=0, pregnancy_n3=0)
+
+
+    for v in data:
+        if v.vb_a:
+            if v.sluchay.dskz.kod in nzO04:
+                n1['all_'] += 1
+                n1['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                n1['from_12_to_22'] += 1 if v.vb_a.srber and  12 <= v.vb_a.srber <= 22 else 0
+                n1['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                n1['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                n1['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+            if v.sluchay.dskz.kod in nzO04:
+                if v.vb_a.pria and v.vb_a.pria.kod == 1:
+                    n1_1['all_'] += 1
+                    n1_1['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                    n1_1['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                    n1_1['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                    n1_1['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                    n1_1['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+            if v.sluchay.dskz.kod in nzO04:
+                if v.vb_a.pria and v.vb_a.pria.kod == 2:
+                    n1_2['all_'] += 1
+                    n1_2['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                    n1_2['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                    n1_2['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                    n1_2['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                    n1_2['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+            if v.sluchay.dskz:
+                if v.sluchay.dskz.kod in nzO2_6:
+                    n3['all_'] +=1
+                    n3['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                    n3['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                    n3['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                    n3['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                    n3['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+
+                    if v.vb_a.pria and v.vb_a.pria.kod == 1:
+                        n3_1['all_'] += 1
+                        n3_1['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                        n3_1['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                        n3_1['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                        n3_1['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                        n3_1['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+
+                    if v.sluchay.dskz.kod in nzO03:
+                        n3_2_1['all_'] += 1
+                        n3_2_1['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                        n3_2_1['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                        n3_2_1['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                        n3_2_1['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                        n3_2_1['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+
+                    if v.sluchay.dskz.kod in nzO04:
+                        n3_2_2['all_'] += 1
+                        n3_2_2['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                        n3_2_2['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                        n3_2_2['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                        n3_2_2['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                        n3_2_2['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+
+                        if 18 >= v.patient_year:
+                            n3_2_4['all_'] += 1
+                            n3_2_4['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                            n3_2_4['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                            n3_2_4['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                            n3_2_4['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                            n3_2_4['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+                        if 18 <= v.patient_year <= 29:
+                            n3_2_5['all_'] += 1
+                            n3_2_5['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                            n3_2_5['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                            n3_2_5['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                            n3_2_5['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                            n3_2_5['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+                        if 30 <= v.patient_year <= 39:
+                            n3_2_6['all_'] += 1
+                            n3_2_6['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                            n3_2_6['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                            n3_2_6['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                            n3_2_6['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                            n3_2_6['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+                        if 40 <= v.patient_year <= 49:
+                            n3_2_7['all_'] += 1
+                            n3_2_7['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                            n3_2_7['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                            n3_2_7['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                            n3_2_7['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                            n3_2_7['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
+                        if 50 <= v.patient_year :
+                            n3_2_8['all_'] += 1
+                            n3_2_8['up_to_12'] += 1 if v.vb_a.srber and v.vb_a.srber < 12 else 0
+                            n3_2_8['from_12_to_22'] += 1 if v.vb_a.srber and 12 <= v.vb_a.srber <= 22 else 0
+                            n3_2_8['pregnancy_n1'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 1 else 0
+                            n3_2_8['pregnancy_n2'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber == 2 else 0
+                            n3_2_8['pregnancy_n3'] += 1 if v.vb_a.n_ber and v.vb_a.n_ber >= 3 else 0
 
 
 
 
+    row = 9
+    sheet.cell(row=row, column=3).value = n1['all_']
+    sheet.cell(row=row, column=4).value = n1['up_to_12']
+    sheet.cell(row=row, column=5).value = n1['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n1['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n1['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n1['pregnancy_n3']
+    row = 10
+    sheet.cell(row=row, column=3).value = n1_1['all_']
+    sheet.cell(row=row, column=4).value = n1_1['up_to_12']
+    sheet.cell(row=row, column=5).value = n1_1['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n1_1['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n1_1['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n1_1['pregnancy_n3']
+    row = 11
+    sheet.cell(row=row, column=3).value = n1_2['all_']
+    sheet.cell(row=row, column=4).value = n1_2['up_to_12']
+    sheet.cell(row=row, column=5).value = n1_2['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n1_2['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n1_2['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n1_2['pregnancy_n3']
+    row = 14
+    sheet.cell(row=row, column=3).value = n3['all_']
+    sheet.cell(row=row, column=4).value = n3['up_to_12']
+    sheet.cell(row=row, column=5).value = n3['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3['pregnancy_n3']
+    row = 15
+    sheet.cell(row=row, column=3).value = n3_1['all_']
+    sheet.cell(row=row, column=4).value = n3_1['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_1['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_1['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_1['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_1['pregnancy_n3']
+    row = 16
+    sheet.cell(row=row, column=3).value = n3_2_1['all_']
+    sheet.cell(row=row, column=4).value = n3_2_1['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_1['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_1['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_1['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_1['pregnancy_n3']
 
+    row = 17
+    sheet.cell(row=row, column=3).value = n3_2_2['all_']
+    sheet.cell(row=row, column=4).value = n3_2_2['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_2['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_2['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_2['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_2['pregnancy_n3']
 
-    # list_dskz_O
-    # list_vb_a
+    row = 18
+    sheet.cell(row=row, column=3).value = n3_2_4['all_']
+    sheet.cell(row=row, column=4).value = n3_2_4['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_4['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_4['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_4['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_4['pregnancy_n3']
+
+    row = 19
+    sheet.cell(row=row, column=3).value = n3_2_5['all_']
+    sheet.cell(row=row, column=4).value = n3_2_5['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_5['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_5['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_5['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_5['pregnancy_n3']
+
+    row = 20
+    sheet.cell(row=row, column=3).value = n3_2_6['all_']
+    sheet.cell(row=row, column=4).value = n3_2_6['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_6['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_6['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_6['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_6['pregnancy_n3']
+
+    row = 21
+    sheet.cell(row=row, column=3).value = n3_2_7['all_']
+    sheet.cell(row=row, column=4).value = n3_2_7['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_7['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_7['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_7['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_7['pregnancy_n3']
+
+    row = 22
+    sheet.cell(row=row, column=3).value = n3_2_8['all_']
+    sheet.cell(row=row, column=4).value = n3_2_8['up_to_12']
+    sheet.cell(row=row, column=5).value = n3_2_8['from_12_to_22']
+    sheet.cell(row=row, column=6).value = n3_2_8['pregnancy_n1']
+    sheet.cell(row=row, column=7).value = n3_2_8['pregnancy_n2']
+    sheet.cell(row=row, column=8).value = n3_2_8['pregnancy_n3']
 
     sheet.cell(row=3, column=1).value = str(name).capitalize()
     sheet.cell(row=4, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")} г.'
@@ -4970,31 +5133,40 @@ class Annual_13_1_4(AnnualReportABC):
         super().__init__(user, request)
         self.user_group_name = 'hospital_annual_reports_%s' % user
     def create(self):
-        file = self.is_file('annual_13_1_4.xlsx',forms=True)
+        file = self.is_file('annual_13_1_4.xlsx',forms=False)
         if file:
             wb = load_workbook(file)
             sheet = wb.active
             os.remove(file)
             patients = PatientsData(self.date_1, self.date_2, self.user)
             patients.sluchays()
+            temp = []
             # list_dskz_O = []
             # list_vb_a = []
-            # for p in patients.patients:
+            for p in patients.patients:
+                if p.sluchay.vb_a:
+                    vb_a = p.sluchay.vb_a
+                    if vb_a.srber and vb_a.n_ber:
+                        temp.append(p)
             #     if  p.vb_a != None and p.sluchay.dskz and (p.sluchay.dskz.kod[:3] in ['O02','O03,','O04','O05','O06']):
             #         list_dskz_O.append(p)
             #     if p.vb_a != None and p.sluchay.dskz and (p.sluchay.dskz.kod[:3] in ['O04']):
             #         list_vb_a.append(p)
-            #
+
             # dic = dict([('sheet', sheet), ('name', self.user.statistics_type.name),
             #             ('date_1', self.date_1), ('date_2', self.date_2), ('list_dskz_O', list_dskz_O),
-            #             ('list_vb_a',list_vb_a)])
+            #             ('list_vb_a',list_vb_a),('data', patients.patients)])
             dic = dict([('sheet', sheet), ('name', self.user.statistics_type.name),
-                        ('date_1', self.date_1), ('date_2', self.date_2), ('data', patients.patients)])
+                        ('date_1', self.date_1), ('date_2', self.date_2), ('data', temp)])
             insert_sheet_AN_13_1_4(**dic)
             wb.save(self.path() + f'group_an_13_4_{self.user.user.id}.xlsx')
+
         async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_group_data_annual', 'text': 'Отчет cфромирован'})
         async_to_sync(get_channel_layer().group_send)(self.user_group_name,
                                                       {'type': 'download_data_annual','name': 'Отчет о выбывших'})
+        async_to_sync(get_channel_layer().group_send)(self.user_group_name, {'type': 'download',
+                                                                             'text': self.path() + f'group_an_13_4_{self.user.user.id}.xlsx',
+                                                                             'name': 'Отчет о хирур.работе отделений'})
 
 
 class Annual_30_1_1(AnnualReportABC):
