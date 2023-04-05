@@ -2384,12 +2384,10 @@ def insert_sheet_a_oth_36(**kwargs):
     data = kwargs['data']
     data = get_list_ds(data)
     tab1 = [[0,0,0],[0,0,0],[0,0,0]]
-    # tab2 = [[0,0,0],[0,0,0],[0,0,0],[0,0,0],
-    #         [0,0,0],[0,0,0],[0,0,0],[0,0,0],
-    #         [0,0,0],[0,0,0]]
-    tab2 = [[0, 0], [0, 0], [0, 0], [0, 0],
-            [0, 0], [0, 0], [0, 0], [0, 0],
-            [0, 0], [0, 0]]
+
+    tab2 = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
+            [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
+            [0, 0, 0], [0, 0, 0]]
 
     for d in data:
         ds = d[0][0]
@@ -2477,28 +2475,28 @@ def insert_sheet_a_oth_36(**kwargs):
                     if sl.sluchay.vrez.kod == 7:
                         tab2[9][1] += 1
 
-        # if ds.kod in ds60_66:
-        #     tab2[0][2] += len(d[1])
-        #     for sl in d[1]:
-        #         if sl.sluchay.vrez:
-        #             if sl.sluchay.vrez.kod in [1,2,3,4,5,6,7,8,9,10]:
-        #                 tab2[1][2] += 1
-        #             if sl.sluchay.vrez.kod == 1:
-        #                 tab2[2][2] += 1
-        #             if sl.sluchay.vrez.kod == 2:
-        #                 tab2[3][2] += 1
-        #             if sl.sluchay.vrez.kod == 3:
-        #                 tab2[4][2] += 1
-        #             if sl.sluchay.vrez.kod == 4:
-        #                 tab2[5][2] += 1
-        #             if sl.sluchay.vrez.kod == 5:
-        #                 tab2[6][2] += 1
-        #             if sl.sluchay.vrez.kod in [1,2,3,4,41]:
-        #                 tab2[7][2] += 1
-        #             if sl.sluchay.vrez.kod == 6:
-        #                 tab2[8][2] += 1
-        #             if sl.sluchay.vrez.kod == 7:
-        #                 tab2[9][2] += 1
+        if ds.kod in ds60_66:
+            tab2[0][2] += len(d[1])
+            for sl in d[1]:
+                if sl.sluchay.vrez:
+                    if sl.sluchay.vrez.kod in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+                        tab2[1][2] += 1
+                    if sl.sluchay.vrez.kod == 1:
+                        tab2[2][2] += 1
+                    if sl.sluchay.vrez.kod == 2:
+                        tab2[3][2] += 1
+                    if sl.sluchay.vrez.kod == 3:
+                        tab2[4][2] += 1
+                    if sl.sluchay.vrez.kod == 4:
+                        tab2[5][2] += 1
+                    if sl.sluchay.vrez.kod == 5:
+                        tab2[6][2] += 1
+                    if sl.sluchay.vrez.kod in [1, 2, 3, 4, 41]:
+                        tab2[7][2] += 1
+                    if sl.sluchay.vrez.kod == 6:
+                        tab2[8][2] += 1
+                    if sl.sluchay.vrez.kod == 7:
+                        tab2[9][2] += 1
     sheet.cell(row=4, column=1).value = str(name).capitalize()
     sheet.cell(row=5, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")} г.'
     row = 8

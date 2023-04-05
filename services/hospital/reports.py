@@ -302,15 +302,33 @@ class Reports(Patients):
                         f_ = sluchay['vb_s'][0].kod_y.naim == filters.get('kod_y')['kod_y'] if sluchay['vb_s'][0].kod_y != None else False
                     if f_ == False: continue
             if filters.get('dskz_prich',None) != None:
-                if filters.get('dskz_prich')['dskz_prich'] != None:
-                    le_trv = sluchay['le_trv']
-                    if le_trv and le_trv.details:
-                        f_ = le_trv.details.kod == filters.get('dskz_prich')['dskz_prich'] if le_trv.details != None else False
-                        if f_ == False: continue
-                    else:
-                        continue
+                dskz_prich_1, dskz_prich_2 = filters.get('dskz_prich').values()
+                le_trv = sluchay['le_trv']
+                if le_trv and le_trv.details:
+                    ds_list = self._ds_list(dskz_prich_1, dskz_prich_2)
+                    if ds_list:
+                        if le_trv.details.kod not in ds_list:
+                            continue
                 else:
                     continue
+            else:
+                continue
+                    # if sluchay['sluchay'].dskz != None:
+                    #     if dskz_1 != '' and dskz_2 != '':
+                    #         ds_list = self._ds_list(dskz_1, dskz_2)
+                    #         if ds_list:
+                    #             if sluchay['sluchay'].dskz.kod not in ds_list:
+                    #                 continue
+                    #     else:
+                    #         continue
+                #     le_trv = sluchay['le_trv']
+                #     if le_trv and le_trv.details:
+                #         f_ = le_trv.details.kod == filters.get('dskz_prich')['dskz_prich'] if le_trv.details != None else False
+                #         if f_ == False: continue
+                #     else:
+                #         continue
+                # else:
+                #     continue
             if filters.get('pr_per',None) != None:
                 if sluchay['vb_s'] != None:
                     if filters.get('pr_per')['pr_per'] != None:

@@ -1664,7 +1664,7 @@ function all_filters() {
 
             else if (this.id == 'fam_filt' || this.id == 'im_filt' || this.id == 'ot_filt' 
                 || this.id == 'ksg_osn_filt' || this.id == 'reg_obl_rai_filt'
-                || this.id == 'dskz_prich_filt' || this.id == 'stay_in_mo_filt' || this.id == 'time_minuts_po_filt' || this.id == 'man_list'
+                || this.id == 'stay_in_mo_filt' || this.id == 'time_minuts_po_filt' || this.id == 'man_list'
                 || this.id == 'metod_hmp' || this.id == 'vid_hmp' || this.id == 'ymer_ymer' || this.id == 'disability_filt') {
                 let inp = document.createElement("input")
                 inp.setAttribute('id', `in_${this.id}`)
@@ -1678,7 +1678,7 @@ function all_filters() {
                 div_block.appendChild(inp)
             }
             else if (this.id == 'dskz_filt' || this.id == 'srber_filt' || this.id == 'dsc_filt' || this.id == 'dspat_filt'|| this.id == 'ds_osl_filt'
-            || this.id == 'ds_onk_filt' ) {
+            || this.id == 'ds_onk_filt' || this.id == 'dskz_prich_filt') {
                 let inp_1 = document.createElement("input")
                 inp_1.setAttribute("style", "width:80px")
                 let inp_2 = document.createElement("input")
@@ -1927,7 +1927,8 @@ function get_checked_filters() {
         }
         else if (div.id == 'dskz_prich_filt_block') {
             filter.dskz_prich = {
-                dskz_prich: div.childNodes[1].value,
+              dskz_prich_1: div.childNodes[2].value,
+              dskz_prich_2: div.childNodes[4].value
             }
         }
         else if (div.id == 'pr_per_filt_block') {

@@ -590,7 +590,7 @@ class AnnualReportABC(ABC):
                 elif k == 'kod_y':
                     filter_list.append({'filter':'Перевод в др. ЛПУ','value':filters['filter'].get(k)[k]})
                 elif k == 'dskz_prich':
-                    filter_list.append({'filter': 'Причина травмы', 'value': filters['filter'].get(k)[k]})
+                    filter_list.append({'filter': 'Причина травмы ', 'value': filters['filter'].get(k)})
                 elif k == 'pr_per':
                     filter_list.append({'filter': 'Причина перевода в др.ЛПУ', 'value': filters['filter'].get(k)[k]})
                 elif k == 'time_minuts_po':
@@ -4605,7 +4605,7 @@ class AnnualPr1(AnnualReportABC):
             wb = load_workbook(file)
             sheet = wb.active
             patients = PatientsData(self.date_1,self.date_2,self.user)
-            patients.sluchays()
+            patients.sluchays(cah=True)
             dic = dict([('sheet', sheet), ('data', patients.patients), ('name', self.user.statistics_type.name),
                 ('date_1', self.date_1), ('date_2', self.date_2)])
             insert_sheet_APR_1(**dic)
@@ -5139,7 +5139,7 @@ class Annual_13_1_4(AnnualReportABC):
             sheet = wb.active
             os.remove(file)
             patients = PatientsData(self.date_1, self.date_2, self.user)
-            patients.sluchays()
+            patients.sluchays(cah=True)
             temp = []
             # list_dskz_O = []
             # list_vb_a = []
