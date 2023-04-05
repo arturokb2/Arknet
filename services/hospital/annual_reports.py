@@ -4605,7 +4605,7 @@ class AnnualPr1(AnnualReportABC):
             wb = load_workbook(file)
             sheet = wb.active
             patients = PatientsData(self.date_1,self.date_2,self.user)
-            patients.sluchays(cah=True)
+            patients.sluchays()
             dic = dict([('sheet', sheet), ('data', patients.patients), ('name', self.user.statistics_type.name),
                 ('date_1', self.date_1), ('date_2', self.date_2)])
             insert_sheet_APR_1(**dic)
@@ -5139,7 +5139,7 @@ class Annual_13_1_4(AnnualReportABC):
             sheet = wb.active
             os.remove(file)
             patients = PatientsData(self.date_1, self.date_2, self.user)
-            patients.sluchays(cah=True)
+            patients.sluchays()
             temp = []
             # list_dskz_O = []
             # list_vb_a = []
