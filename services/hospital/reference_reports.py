@@ -3430,7 +3430,7 @@ class GroupP2(AnnualReportABC):
             os.remove(file)
             sheet = wb.active
             patients = PatientsDataFiltrs(self.date_1,self.date_2,self.user,self.request)
-            # print(len(patients.patients))
+            print(len(patients.patients))
             dic = dict([('sheet',sheet),('data',patients.patients),('name',self.user.statistics_type.name),
                         ('date_1',self.date_1),('date_2',self.date_2),('filters',self.filters_list())])
             insert_sheet_P2(**dic)

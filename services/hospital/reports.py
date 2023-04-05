@@ -311,8 +311,7 @@ class Reports(Patients):
                             continue
                 else:
                     continue
-            else:
-                continue
+
                     # if sluchay['sluchay'].dskz != None:
                     #     if dskz_1 != '' and dskz_2 != '':
                     #         ds_list = self._ds_list(dskz_1, dskz_2)
