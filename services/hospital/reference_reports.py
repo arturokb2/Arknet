@@ -618,7 +618,7 @@ def get_rez_rep_5_6(data,ds):
             ds[0]+=1
             kd = d.sluchay.le_vr.kd if d.sluchay.le_vr.kd != '' and d.sluchay.le_vr.kd != None else 0
             ds[1] += kd
-            if kd == 1:
+            if kd < 1:
                 ds[3]+=1
             if 1<=kd<=3:
                 ds[4]+=1
@@ -2505,6 +2505,12 @@ def insert_sheet_a_oth_36(**kwargs):
         for n,res in enumerate(result):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
     row = 16
+    sum_1 = sum([r[0] for r in tab2[2:]])
+    sum_2 = sum([r[1] for r in tab2[2:]])
+    sum_3 = sum([r[2] for r in tab2[2:]])
+
+    tab2[1] = [sum_1,sum_2,sum_3]
+
     for result in tab2:
         row += 1
         for n,res in enumerate(result):
