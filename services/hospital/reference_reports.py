@@ -2377,7 +2377,8 @@ def insert_sheet_a_oth_36(**kwargs):
     ds60_69 = [k['kod'] for k in ds60_69]
     ds60_66 = list(Ds.objects.values('kod').filter(kod__range=('I60', 'I66.9')))
     ds60_66 = [k['kod'] for k in ds60_66]
-    sheet = kwargs['sheet']
+    sheet = kwargs['sheet'][0]
+    sheet2 = kwargs['sheet'][1]
     name = kwargs['name']
     date_1 = kwargs['date_1']
     date_2 = kwargs['date_2']
@@ -2388,6 +2389,11 @@ def insert_sheet_a_oth_36(**kwargs):
     tab2 = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
             [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
             [0, 0, 0], [0, 0, 0]]
+
+    tab3 = [[0,0,0],[0,0,0]]
+    tab4 = [[0, 0, 0], [0, 0, 0]]
+
+    data_4_5 = []
 
     for d in data:
         ds = d[0][0]
@@ -2452,6 +2458,11 @@ def insert_sheet_a_oth_36(**kwargs):
                         tab2[8][0] += 1
                     if sl.sluchay.vrez.kod == 7:
                         tab2[9][0] += 1
+                    if sl.sluchay.vrez.kod in [1,2,3,4,5,6,7,8,9]:
+                        tab3[1][0] += 1
+                    if sl.sluchay.vrez.kod in [1,2,3,4,5]:
+                        tab4[1][0] += 1
+                        data_4_5.append(sl)
         if ds.kod in ds63:
             tab2[0][1] += len(d[1])
             for sl in d[1]:
@@ -2474,7 +2485,11 @@ def insert_sheet_a_oth_36(**kwargs):
                         tab2[8][1] += 1
                     if sl.sluchay.vrez.kod == 7:
                         tab2[9][1] += 1
-
+                    if sl.sluchay.vrez.kod in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+                        tab3[1][1] += 1
+                    if sl.sluchay.vrez.kod in [1,2,3,4,5]:
+                        tab4[1][1] += 1
+                        data_4_5.append(sl)
         if ds.kod in ds60_66:
             tab2[0][2] += len(d[1])
             for sl in d[1]:
@@ -2497,6 +2512,12 @@ def insert_sheet_a_oth_36(**kwargs):
                         tab2[8][2] += 1
                     if sl.sluchay.vrez.kod == 7:
                         tab2[9][2] += 1
+                    if sl.sluchay.vrez.kod in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+                        tab3[1][2] += 1
+                    if sl.sluchay.vrez.kod in [1, 2, 3, 4, 5]:
+                        tab4[1][2] += 1
+                        data_4_5.append(sl)
+
     sheet.cell(row=4, column=1).value = str(name).capitalize()
     sheet.cell(row=5, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")} г.'
     row = 8
@@ -2505,16 +2526,59 @@ def insert_sheet_a_oth_36(**kwargs):
         for n,res in enumerate(result):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
     row = 16
-    sum_1 = sum([r[0] for r in tab2[2:]])
-    sum_2 = sum([r[1] for r in tab2[2:]])
-    sum_3 = sum([r[2] for r in tab2[2:]])
-
-    tab2[1] = [sum_1,sum_2,sum_3]
+    # sum_1 = sum([r[0] for r in tab2[2:]])
+    # sum_2 = sum([r[1] for r in tab2[2:]])
+    # sum_3 = sum([r[2] for r in tab2[2:]])
+    #
+    # tab2[1] = [sum_1,sum_2,sum_3]
+    tab2.pop(1)
+    tab3[0] = tab2[0]
+    tab4[0] = tab2[0]
 
     for result in tab2:
         row += 1
         for n,res in enumerate(result):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
+
+    row = 29
+    for result in tab3:
+        row += 1
+        for n,res in enumerate(result):
+            sheet.cell(row=row, column=2+n).value = res if res != 0 else None
+
+    row = 35
+    for result in tab4:
+        row += 1
+        for n,res in enumerate(result):
+            sheet.cell(row=row, column=2+n).value = res if res != 0 else None
+    temp = []
+    data_4_5 = set(data_4_5)
+    for p in data_4_5:
+        ord = OrderedDict()
+        ord['nib'] = p.sluchay.nib[4:]
+        ord['otd'] = p.sluchay.otd.naim if p.sluchay.otd else ''
+        f = p.patient.fam
+        i = p.patient.im[0] if len(p.patient.im) > 0 else ''
+        ot = p.patient.ot[0] if len(p.patient.ot) > 0 else ''
+        ord['fio'] = f'{f} {i}.{ot}'
+        ord['datr'] = p.patient.datr.strftime('%d.%m.%Y') if p.patient.datr else None
+        ord['datp'] = p.sluchay.datp.strftime('%d.%m.%Y') if p.sluchay.datp else None
+        ord['datv'] = p.sluchay.datv.strftime('%d.%m.%Y') if p.sluchay.datv else None
+        # ord['isx'] = 'умр.' if p.sluchay.icx and p.sluchay.icx.id_iz in [105, 106] else None
+        # ord['dskz'] = f'{p.sluchay.dskz.kod}' if p.sluchay.dskz else None
+        # ord['prof_k'] = p.sluchay.le_vr.prof_k.k_prname if p.sluchay.le_vr and p.sluchay.le_vr.prof_k else None
+        # ord['vds'] = p.sluchay.vds.vds.naim[:5] if p.sluchay.vds and p.sluchay.vds.vds else None
+        temp.append(ord)
+    temp = sorted(temp,key=itemgetter('fio'))
+    row = 4
+    for result in temp:
+        row += 1
+        sheet2.cell(row=row, column=1).value = result['nib']
+        sheet2.cell(row=row, column=2).value = result['otd']
+        sheet2.cell(row=row, column=3).value = result['fio']
+        sheet2.cell(row=row, column=4).value = result['datp']
+        sheet2.cell(row=row, column=5).value = result['datv']
+
 
 def insert_sheet_a_oth_37(**kwargs):
     sheet = kwargs['sheet'][0]
@@ -5305,11 +5369,12 @@ class AOth36(AnnualReportABC):
         file = self.is_file('a_oth_36.xlsx')
         if file:
             wb = load_workbook(file)
-            sheet = wb.active
+            sheet = wb.get_sheet_by_name('Лист1')
+            sheet1 = wb.get_sheet_by_name('Лист2')
             os.remove(file)
             patients = PatientsData(self.date_1, self.date_2, self.user)
             patients.sluchays()
-            dic = dict([('sheet', sheet), ('data', patients.patients), ('name', self.user.statistics_type.name),
+            dic = dict([('sheet', [sheet,sheet1]), ('data', patients.patients), ('name', self.user.statistics_type.name),
                         ('date_1', self.date_1), ('date_2', self.date_2)])
             insert_sheet_a_oth_36(**dic)
             wb.save(self.path() + f'a_oth_36_{self.user.user.id}.xlsx')
