@@ -2394,12 +2394,13 @@ def insert_sheet_a_oth_36(**kwargs):
     tab4 = [[0, 0, 0], [0, 0, 0]]
 
     data_4_5 = []
-
+    ds60_64_all = []
     for d in data:
         ds = d[0][0]
         if ds.kod in ds60_64:
             tab1[0][0] += len(d[1])
             for sl in d[1]:
+                ds60_64_all.append(sl)
                 year = sl.patient_year
                 if sl.patient.cj:
                     if sl.patient.cj.kod == 2:
@@ -2489,7 +2490,7 @@ def insert_sheet_a_oth_36(**kwargs):
                         tab3[1][1] += 1
                     if sl.sluchay.vrez.kod in [1,2,3,4,5]:
                         tab4[1][1] += 1
-                        data_4_5.append(sl)
+                        # data_4_5.append(sl)
         if ds.kod in ds60_66:
             tab2[0][2] += len(d[1])
             for sl in d[1]:
@@ -2516,7 +2517,7 @@ def insert_sheet_a_oth_36(**kwargs):
                         tab3[1][2] += 1
                     if sl.sluchay.vrez.kod in [1, 2, 3, 4, 5]:
                         tab4[1][2] += 1
-                        data_4_5.append(sl)
+                        # data_4_5.append(sl)
 
     sheet.cell(row=4, column=1).value = str(name).capitalize()
     sheet.cell(row=5, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")} г.'
@@ -2553,7 +2554,9 @@ def insert_sheet_a_oth_36(**kwargs):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
     temp = []
     data_4_5 = set(data_4_5)
-    for p in data_4_5:
+    ds60_64_all = set(ds60_64_all)
+    ds60_64_all = ds60_64_all.difference(data_4_5)
+    for p in ds60_64_all:
         ord = OrderedDict()
         ord['nib'] = p.sluchay.nib[4:]
         ord['otd'] = p.sluchay.otd.naim if p.sluchay.otd else ''
@@ -2564,21 +2567,30 @@ def insert_sheet_a_oth_36(**kwargs):
         ord['datr'] = p.patient.datr.strftime('%d.%m.%Y') if p.patient.datr else None
         ord['datp'] = p.sluchay.datp.strftime('%d.%m.%Y') if p.sluchay.datp else None
         ord['datv'] = p.sluchay.datv.strftime('%d.%m.%Y') if p.sluchay.datv else None
-        # ord['isx'] = 'умр.' if p.sluchay.icx and p.sluchay.icx.id_iz in [105, 106] else None
-        # ord['dskz'] = f'{p.sluchay.dskz.kod}' if p.sluchay.dskz else None
-        # ord['prof_k'] = p.sluchay.le_vr.prof_k.k_prname if p.sluchay.le_vr and p.sluchay.le_vr.prof_k else None
-        # ord['vds'] = p.sluchay.vds.vds.naim[:5] if p.sluchay.vds and p.sluchay.vds.vds else None
+        ord['isx'] = 'умр.' if p.sluchay.icx and p.sluchay.icx.id_iz in [105, 106] else None
+        ord['dskz'] = f'{p.sluchay.dskz.kod}' if p.sluchay.dskz else None
+        ord['prof_k'] = p.sluchay.le_vr.prof_k.k_prname if p.sluchay.le_vr and p.sluchay.le_vr.prof_k else None
+        ord['vds'] = p.sluchay.vds.vds.naim[:5] if p.sluchay.vds and p.sluchay.vds.vds else None
+        ord['m_roj'] = p.patient.m_roj
         temp.append(ord)
     temp = sorted(temp,key=itemgetter('fio'))
     row = 4
     for result in temp:
         row += 1
+        sheet2.row_dimensions[row].height = 35
         sheet2.cell(row=row, column=1).value = result['nib']
         sheet2.cell(row=row, column=2).value = result['otd']
         sheet2.cell(row=row, column=3).value = result['fio']
-        sheet2.cell(row=row, column=4).value = result['datp']
-        sheet2.cell(row=row, column=5).value = result['datv']
-
+        sheet2.cell(row=row, column=4).value = result['datr']
+        sheet2.cell(row=row, column=5).value = result['datp']
+        sheet2.cell(row=row, column=6).value = result['datv']
+        sheet2.cell(row=row, column=7).value = result['isx']
+        sheet2.cell(row=row, column=8).value = result['dskz']
+        sheet2.cell(row=row, column=9).value = result['prof_k']
+        sheet2.cell(row=row, column=9).alignment = styles.Alignment(horizontal="left", vertical="center",wrap_text=True)
+        sheet2.cell(row=row, column=10).value = result['vds']
+        sheet2.cell(row=row, column=11).value = result['m_roj']
+        sheet2.cell(row=row, column=11).alignment = styles.Alignment(horizontal="left", vertical="top",wrap_text=True)
 
 def insert_sheet_a_oth_37(**kwargs):
     sheet = kwargs['sheet'][0]
