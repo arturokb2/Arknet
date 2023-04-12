@@ -2536,18 +2536,19 @@ def insert_sheet_a_oth_36(**kwargs):
     tab3[0] = tab2[0]
     tab4[0] = tab2[0]
 
-    for result in tab2:
-        row += 1
-        for n,res in enumerate(result):
-            sheet.cell(row=row, column=2+n).value = res if res != 0 else None
+    for r,result in enumerate(tab2):
+        if r != 6:
+            row += 1
+            for n,res in enumerate(result):
+                sheet.cell(row=row, column=2+n).value = res if res != 0 else None
 
-    row = 29
+    row = 28
     for result in tab3:
         row += 1
         for n,res in enumerate(result):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
 
-    row = 35
+    row = 34
     for result in tab4:
         row += 1
         for n,res in enumerate(result):
