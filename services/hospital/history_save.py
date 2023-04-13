@@ -1742,6 +1742,16 @@ class Save():
         except:
             pass
 
+        try:
+            if data['take_care'] == 'Да':
+                patient_p.take_care = True
+            elif data['take_care'] == 'Нет':
+                patient_p.take_care = False
+            else:
+                patient_p.take_care = None
+        except KeyError:
+            patient_p.take_care = None
+
     def update_onmk_sp(self, onmk_sp, data):
         try:
             onmk_sp.p001 = data['p001']

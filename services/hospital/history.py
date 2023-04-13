@@ -481,6 +481,12 @@ class History:
             data['n_pol'] = patient.patient_p.n_pol
             data['okatog_p'] = patient.patient_p.okatog
             data['okatop_p'] = patient.patient_p.okatop
+            if patient.patient_p.take_care == True:
+                data['take_care'] = "Да"
+            elif patient.patient_p.take_care == False:
+                data['take_care'] = "Нет"
+            else:
+                data['take_care'] = ''
         else:
             data['fam_p'] = ''
             data['im_p'] = ''
@@ -495,6 +501,7 @@ class History:
             data['stat_p'] = ''
             data['s_pol'] = ''
             data['n_pol'] = ''
+            data['take_care'] = ''
 
         # # G.Адрес проживания
         data['m_roj'] = patient.m_roj if patient.m_roj != None and patient.m_roj != "" else patient.adr if patient.adr != "" else ''

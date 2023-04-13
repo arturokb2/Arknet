@@ -1050,6 +1050,8 @@ class Patient_P(models.Model):
     okatog = models.CharField(max_length=50, blank=True, null=True)
     okatop = models.CharField(max_length=50, blank=True, null=True)
     is_1c = models.BooleanField(blank=True, null=True, default=None)
+    take_care = models.BooleanField(blank=True,null=True,default=None)
+
 class Patient(models.Model):
     # Сведения о пациенте
     RPR_CHOICES = [

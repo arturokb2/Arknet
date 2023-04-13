@@ -3889,11 +3889,22 @@ function key() {
                 }
             }
             else if (event.target.id == "n_pol") {
+                if (event.keyCode == 13) {
+                    $("#take_care").focus()
+                }
                 if (event.keyCode == 46) {
                     app.$data.history.n_pol = ""
                 }
                 if (event.keyCode == 33) {
                     $("#s_pol").focus()
+                }
+            }
+            else if (event.target.id == "take_care") {
+                if (event.keyCode == 46) {
+                    app.$data.history.take_care = ""
+                }
+                if (event.keyCode == 33) {
+                    $("#n_pol").focus()
                 }
             }
         }

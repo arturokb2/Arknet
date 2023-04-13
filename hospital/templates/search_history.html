@@ -1405,6 +1405,16 @@
                                             <input type="text" class="control_input text-center" v-model="history.n_pol"
                                                 autocomplete="off" id="n_pol">
                                         </div>
+                                                   <div class="ml-3">
+                                            <label style="margin-right: 3px;">По уходу за ребенком</label>
+                                            <input type="text" style="width: 218px;" class="control_input text-center"
+                                                list="take_care-l" v-model="history.take_care" autocomplete="off"
+                                                id="take_care">
+                                            <datalist id="take_care-l">
+                                                <option>Да</option>
+                                                <option>Нет</option>
+                                            </datalist>
+                                        </div>
                                     </div>
 
                                     <div class="tab-pane fade " id="inf_adr" role="tabpanel"
