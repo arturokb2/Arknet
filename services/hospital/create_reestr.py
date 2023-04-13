@@ -619,7 +619,7 @@ class Create(CreateReestr):
         resdict_S['DOCSER'] = pat.patient.s_pasp
         resdict_S['DOCNUM'] = pat.patient.n_pasp
         resdict_S['DOCDATE'] = pat.patient.docdate
-        resdict_S['DOCORG'] = pat.patient.docorg
+        resdict_S['DOCORG'] = pat.patient.docorg[:100]
         resdict_S['SNILS'] = pat.patient.ss
         resdict_S['OKATOG'] = str(pat.patient.okatog[:11]) if pat.patient.okatog != None else None
         resdict_S['OKATOP'] = str(pat.patient.okatop[:11]) if pat.patient.okatop != None else None
