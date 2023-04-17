@@ -665,7 +665,7 @@ class Create(CreateReestr):
         resdict_S['KOEF_D'] = tarif.KOEF_D if tarif else None
         resdict_S['KOEF_U'] = tarif.KOEF_U if tarif else None
         resdict_S['CRIT'] = pat.sluchay.oopkk.kod if pat.sluchay.oopkk else None
-        resdict_S['SL_K'] = 0
+        resdict_S['SL_K'] = 1 if pat.patient_p != None and pat.patient_p.take_care  else None
         resdict_S['C_ZAB'] = pat.sluchay.c_zab.id_cz if pat.sluchay.c_zab else None
         resdict_S['DS_ONK'] = 0
         resdict_S['ONK_SL'] = 1 if pat.sluchay.dskz and str(pat.sluchay.dskz.kod)[:1] == 'C' else 0
@@ -700,6 +700,11 @@ class Create(CreateReestr):
         resdict_S['DATE_MED'] = med_dev.date if med_dev and med_dev.date else None
         resdict_S['CODE_MEDDE'] = int(med_dev.code.rzn) if med_dev  and med_dev.code else None
         resdict_S['NUMBER_SER'] = med_dev.number_ser if med_dev else ''
+
+        # resdict_S['SL_K'] = 1 if pat.patient_p != None and pat.patient_p.take_care  else None
+        resdict_S['IT_SL'] = 0.2 if pat.patient_p != None and pat.patient_p.take_care else None
+        resdict_S['IDSL'] = 1 if pat.patient_p != None and pat.patient_p.take_care else None
+        resdict_S['Z_SL'] = 0.2 if pat.patient_p != None and pat.patient_p.take_care else None
 
         if len(resdict_S['CODE_USL']) == 0:
             if pat.sluchay.tip_oms == '1':
@@ -991,6 +996,10 @@ class Create(CreateReestr):
                           'DATE_MED D;'
                           'CODE_MEDDE N(6,0);'
                           'NUMBER_SER C(100);'
+                          # 'SL_K N(1,0);'
+                          'IT_SL N(3,1);'
+                          'IDSL N(4,0);'
+                          'Z_SL N(3,1);'
                           ,codepage="cp866")
         table.open(mode=dbf.READ_WRITE)
 

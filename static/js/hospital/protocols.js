@@ -46,6 +46,7 @@ function start_prot() {
     prot_25()
 //    prot_26()
     prot_27()
+    prot_28()
 }
 
 function SPEC() {
@@ -454,6 +455,19 @@ function prot_27(){
         }
     }
     
+}
+function prot_28(){
+    let take_care = app.$data.history.take_care
+    let fam_p = app.$data.history.fam_p
+    let im_p = app.$data.history.im_p
+    let ot_p = app.$data.history.ot_p
+    let n_pol = app.$data.history.n_pol
+    if (take_care == 'Да'){
+        if (fam_p.length  == 0){add_prot('Фамилия предстовителя не должно быть пустым')}
+        if (im_p.length  == 0){add_prot('Имя предстовителя не должно быть пустым')}
+        if (ot_p.length  == 0){add_prot('Отчество предстовителя не должно быть пустым')}
+        if (n_pol.length  == 0){add_prot('Номер полиса предстовителя не должно быть пустым')}
+    }
 }
 
 

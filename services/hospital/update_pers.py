@@ -76,7 +76,8 @@ class UpdatePers:
                         doctype = None
                     except F011.MultipleObjectsReturned:
                         doctype = None
-
+                    if pat.patient_p != None:
+                        continue
                     pat.udl = doctype if doctype != None else pat.udl
                     pat.s_pasp = p.docser_ree if len(p.docser_ree) > 0 else pat.s_pasp
                     pat.n_pasp = p.docnum_ree if len(p.docnum_ree) > 0 else pat.n_pasp
