@@ -2379,6 +2379,7 @@ def insert_sheet_a_oth_36(**kwargs):
     ds60_66 = [k['kod'] for k in ds60_66]
     sheet = kwargs['sheet'][0]
     sheet2 = kwargs['sheet'][1]
+    sheet3 = kwargs['sheet'][2]
     name = kwargs['name']
     date_1 = kwargs['date_1']
     date_2 = kwargs['date_2']
@@ -2557,6 +2558,8 @@ def insert_sheet_a_oth_36(**kwargs):
     data_4_5 = set(data_4_5)
     ds60_64_all = set(ds60_64_all)
     ds60_64_all = ds60_64_all.difference(data_4_5)
+
+
     for p in ds60_64_all:
         ord = OrderedDict()
         ord['nib'] = p.sluchay.nib[4:]
@@ -2592,6 +2595,43 @@ def insert_sheet_a_oth_36(**kwargs):
         sheet2.cell(row=row, column=10).value = result['vds']
         sheet2.cell(row=row, column=11).value = result['m_roj']
         sheet2.cell(row=row, column=11).alignment = styles.Alignment(horizontal="left", vertical="top",wrap_text=True)
+
+    temp.clear()
+    for p in data_4_5:
+        ord = OrderedDict()
+        ord['nib'] = p.sluchay.nib[4:]
+        ord['otd'] = p.sluchay.otd.naim if p.sluchay.otd else ''
+        f = p.patient.fam
+        i = p.patient.im[0] if len(p.patient.im) > 0 else ''
+        ot = p.patient.ot[0] if len(p.patient.ot) > 0 else ''
+        ord['fio'] = f'{f} {i}.{ot}'
+        ord['datr'] = p.patient.datr.strftime('%d.%m.%Y') if p.patient.datr else None
+        ord['datp'] = p.sluchay.datp.strftime('%d.%m.%Y') if p.sluchay.datp else None
+        ord['datv'] = p.sluchay.datv.strftime('%d.%m.%Y') if p.sluchay.datv else None
+        ord['isx'] = 'умр.' if p.sluchay.icx and p.sluchay.icx.id_iz in [105, 106] else None
+        ord['dskz'] = f'{p.sluchay.dskz.kod}' if p.sluchay.dskz else None
+        ord['prof_k'] = p.sluchay.le_vr.prof_k.k_prname if p.sluchay.le_vr and p.sluchay.le_vr.prof_k else None
+        ord['vds'] = p.sluchay.vds.vds.naim[:5] if p.sluchay.vds and p.sluchay.vds.vds else None
+        ord['m_roj'] = p.patient.m_roj
+        temp.append(ord)
+    temp = sorted(temp,key=itemgetter('fio'))
+    row = 4
+    for result in temp:
+        row += 1
+        sheet3.row_dimensions[row].height = 35
+        sheet3.cell(row=row, column=1).value = result['nib']
+        sheet3.cell(row=row, column=2).value = result['otd']
+        sheet3.cell(row=row, column=3).value = result['fio']
+        sheet3.cell(row=row, column=4).value = result['datr']
+        sheet3.cell(row=row, column=5).value = result['datp']
+        sheet3.cell(row=row, column=6).value = result['datv']
+        sheet3.cell(row=row, column=7).value = result['isx']
+        sheet3.cell(row=row, column=8).value = result['dskz']
+        sheet3.cell(row=row, column=9).value = result['prof_k']
+        sheet3.cell(row=row, column=9).alignment = styles.Alignment(horizontal="left", vertical="center",wrap_text=True)
+        sheet3.cell(row=row, column=10).value = result['vds']
+        sheet3.cell(row=row, column=11).value = result['m_roj']
+        sheet3.cell(row=row, column=11).alignment = styles.Alignment(horizontal="left", vertical="top",wrap_text=True)
 
 def insert_sheet_a_oth_37(**kwargs):
     sheet = kwargs['sheet'][0]
@@ -5384,10 +5424,11 @@ class AOth36(AnnualReportABC):
             wb = load_workbook(file)
             sheet = wb.get_sheet_by_name('Лист1')
             sheet1 = wb.get_sheet_by_name('Лист2')
+            sheet2 = wb.get_sheet_by_name('Лист3')
             os.remove(file)
             patients = PatientsData(self.date_1, self.date_2, self.user)
             patients.sluchays()
-            dic = dict([('sheet', [sheet,sheet1]), ('data', patients.patients), ('name', self.user.statistics_type.name),
+            dic = dict([('sheet', [sheet,sheet1,sheet2]), ('data', patients.patients), ('name', self.user.statistics_type.name),
                         ('date_1', self.date_1), ('date_2', self.date_2)])
             insert_sheet_a_oth_36(**dic)
             wb.save(self.path() + f'a_oth_36_{self.user.user.id}.xlsx')
