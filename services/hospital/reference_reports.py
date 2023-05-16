@@ -21,6 +21,20 @@ border = Border(left=Side(border_style='thin',color='000000'),
                             top=Side(border_style='thin',color='000000'),
                             bottom=Side(border_style='thin', color='000000'))
 
+# def test_dec(func):
+#     def inner():
+#         func()
+#         # print(func.row)
+#     return inner
+
+import functools
+import datetime
+def set_date(method):
+    @functools.wraps(method)
+    def wrapper(**kwargs):
+        sheet,row = method(**kwargs)
+        sheet.cell(row=row+3,column=1).value = datetime.datetime.now()
+    return wrapper
 
 nzI60 = list(Ds.objects.values('kod').filter(kod__range=('I60','I60.9')))
 nzI60 = [k['kod'] for k in nzI60]
@@ -215,6 +229,7 @@ def get_list_ds_oper(data):
     for d in data:
         if d.sluchay.dskz and d.sluchay.dskz.kod not in ds_list:
             ds_list.append(d.sluchay.dskz.kod)
+    ds_list.sort()
     ds_oper = []
     for o in ds_list:
         temp = [[],[],[]]
@@ -660,7 +675,7 @@ class PatientsDataFiltrs(PatientsData):
             self.get_data(s['sluchay'].id)
 
 
-
+@set_date
 def insert_sheet_P1(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -783,7 +798,7 @@ def insert_sheet_P1(**kwargs):
             sheet.cell(row=row_, column=1).value = f'{dat[0]} - {len(dat[1])}'
             sheet.cell(row=row_, column=1).font = font
             sheet.row_dimensions[row_].height = 20
-        return sheet
+        return sheet,row_
 
 def insert_sheet_implants(**kwargs):
     sheet = kwargs['sheet']
@@ -3450,6 +3465,7 @@ class GroupP1(AnnualReportABC):
         self.otdels = json.loads(request.get('otdels'))
         self.user_group_name = 'hospital_reports_%s' % user
         self.fil_child = request.get('fil_child')
+
     def create(self):
         file = self.is_file('group_p1.xlsx')
         if file:
@@ -3502,7 +3518,7 @@ class GroupP1(AnnualReportABC):
             dic = dict([('sheet',sheet),('name',self.user.statistics_type.name),
                         ('date_1',self.date_1),('date_2',self.date_2),('data',data),
                         ('count',count),('ym_count',ym_count),('otdels',self.otdels)])
-            sheet = insert_sheet_P1(**dic)
+            insert_sheet_P1(**dic)
             wb.save(self.path() + f'group_p1_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_group_data', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,
@@ -4856,10 +4872,14 @@ class VaultOtd(AnnualReportABC):
                     for n,o in enumerate(d[1],1):
                         if n != 1:
                             row+=1
-                        k = V001.objects.get(kod=o)
-                        sheet.cell(row=row, column=7).value = k.kod
-                        sheet.cell(row=row, column=7).alignment = styles.Alignment(horizontal="center", vertical="center")
-                        sheet.cell(row=row, column=8).value = k.naim[:25]
+                        try:
+                            k = V001.objects.get(kod=o)
+                            sheet.cell(row=row, column=7).value = k.kod
+                            sheet.cell(row=row, column=7).alignment = styles.Alignment(horizontal="center", vertical="center")
+                            sheet.cell(row=row, column=8).value = k.naim[:25]
+                        except V001.DoesNotExist:
+                            sheet.cell(row=row, column=7).value = ''
+                            sheet.cell(row=row, column=8).value = ''
                         count_oper = 0
                         count_ym = 0
                         for c in d[2]:

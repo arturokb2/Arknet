@@ -114,6 +114,8 @@ class History:
                         sluchay.datv - sluchay.datp).split(' ')[0]
                 else:
                     le_vr['N'] = 1
+            else:
+                le_vr['N'] = ''
 
             le_vr['aro'] = le_vr_obj.aro if le_vr_obj.aro != None else ''
             le_vr['otd'] = le_vr_obj.otd if le_vr_obj.otd != None else ''
