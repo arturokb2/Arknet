@@ -254,8 +254,12 @@ class Reports(Patients):
             if filters.get('t_trv',None) != None:
                 if filters.get('t_trv')['t_trv'] != None:
                     if sluchay['le_trv'] !=  None:
-                        f_ = sluchay['le_trv'].t_trv.naim in filters.get('t_trv')['t_trv'] if sluchay['le_trv'].t_trv != None else False
-                        if f_ == False: continue
+                        if filters.get('t_trv')['t_trv'] != 'Производственная травма':
+                            f_ = sluchay['le_trv'].t_trv.naim in filters.get('t_trv')['t_trv'] if sluchay['le_trv'].t_trv != None else False
+                            if f_ == False: continue
+                        else:
+                            f_ = sluchay['le_trv'].t_trv.kod in ['1','2','3','4'] if sluchay['le_trv'].t_trv != None else False
+                            if f_ == False: continue
                     else:
                         continue
                 else:

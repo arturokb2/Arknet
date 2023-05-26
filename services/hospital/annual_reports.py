@@ -24,6 +24,7 @@ from services.hospital.patient import PatientsData
 from services.hospital.reports import *
 from collections import OrderedDict
 import services.hospital.reference_reports as rr
+
 import numpy
 # from services.hospital.reference_reports import get_list_otd_prof 
 # from services.hospital.reference_reports import get_list_otd_prof
@@ -629,6 +630,7 @@ class AnnualReportABC(ABC):
 
 
 
+
 def insert_sheet_AN_13_1_4(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -870,6 +872,7 @@ def insert_sheet_AN_13_1_4(**kwargs):
 
     sheet.cell(row=3, column=1).value = str(name).capitalize()
     sheet.cell(row=4, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")} г.'
+    return [[sheet,row]]
 
 def get_rez_a_oth_30_1_1(data,date):
     _=[0,0,0,0,0,0,0,0,0,0,0]
@@ -914,6 +917,7 @@ def get_rez_a_oth_30_1_1(data,date):
 
 
     return _
+
 def insert_sheet_AN_30_1_1(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -961,6 +965,8 @@ def insert_sheet_AN_30_1_1(**kwargs):
     sheet.cell(row, column=4).value = nn
     for n,r in enumerate(rez_all):
         sheet.cell(row, column=5 + n).value = r if r !=0 else None
+
+    return [[sheet,row]]
 def get_rez_a_oth_30_2_1(data,ds1,ds2=None,t=1):
     if t == 1:
         rez_all = [0,0,0,0,0,0]
@@ -1191,6 +1197,7 @@ def insert_sheet_AN_30_2_1(**kwargs):
         row+=1
         for t,a in enumerate(_24[n]):
             sheet1.cell(row=row, column=5+t).value = a if a != 0 else None
+
     ##Лист2
     dsK56_rez_all = get_rez_a_oth_30_2_1(kwargs['data'],ds1=nzK56,t=2)
     dsK35_rez_all = get_rez_a_oth_30_2_1(kwargs['data'], ds1=nzK35,t=2)
@@ -1280,6 +1287,7 @@ def insert_sheet_AN_30_2_1(**kwargs):
         for t,a in enumerate(v):
             sheet3.cell(row=row, column=4+t).value = a if a!=0 else None
         row += 1
+
 def insert_sheet_APR_1(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1362,6 +1370,7 @@ def insert_sheet_APR_1(**kwargs):
                 sheet.cell(row=row, column=3+r).value = rez[r] if rez[r] != 0 else None
                 sheet.cell(row=row, column=3+r).font = font
                 sheet.cell(row=row, column=3+r).alignment = styles.Alignment(horizontal="center", vertical="center",wrap_text=True)
+    return [[sheet,row]]
 
 def insert_sheet_APR_2(**kwargs):
     sheet = kwargs['sheet']
@@ -1456,6 +1465,7 @@ def insert_sheet_APR_2(**kwargs):
         sheet.cell(row=row, column=1).alignment = styles.Alignment(horizontal="center", vertical="center",wrap_text=True)
         sheet.cell(row=row, column=1).font = font
         sheet.row_dimensions[row].height = 30
+    return [[sheet,row]]
 
 def insert_sheet_VRA(**kwargs):
     sheet = kwargs['sheet'][0]
@@ -1704,7 +1714,7 @@ def insert_sheet_VRA(**kwargs):
         sheet3.cell(row=row, column=1).alignment = styles.Alignment(horizontal="center", vertical="center")
         sheet3.cell(row=row, column=2).value = all_count
         sheet3.cell(row=row, column=1).alignment = styles.Alignment(horizontal="center", vertical="center")
-        sheet3.cell(row=row, column=2).alignment = styles.Alignment(horizontal="center", vertical="center")  
+        sheet3.cell(row=row, column=2).alignment = styles.Alignment(horizontal="center", vertical="center")
 
 
 def ds_list_filter(data,ds1,ds2):

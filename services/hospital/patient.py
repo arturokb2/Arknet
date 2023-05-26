@@ -390,11 +390,17 @@ class PatientMedDevBuilder(PatientKsgKpgBuilder):
 
 class PatientYear(PatientMedDevBuilder):
     def set_patient_year(self):
-        datp_year = self.patient.sluchay.datp.year if self.patient.sluchay.datp else 0
-        datr_year = self.patient.patient.datr.year if self.patient.patient.datr else 0
-        year = datp_year - datr_year
-        if year > 0:
-            self.patient.patient_year = year
+        # datp_year = self.patient.sluchay.datp.year if self.patient.sluchay.datp else 0
+        # datr_year = self.patient.patient.datr.year if self.patient.patient.datr else 0
+        # year = datp_year - datr_year
+        # if year > 0:
+        #     self.patient.patient_year = year
+        # else:
+        #     self.patient.patient_year = 0
+        if self.patient.sluchay.datp != None and self.patient.patient.datr != None:
+            datp = self.patient.sluchay.datp
+            datr = self.patient.patient.datr
+            self.patient.patient_year = datp.year - datr.year - ((datp.month, datp.day) < (datr.month, datr.day))
         else:
             self.patient.patient_year = 0
         return self

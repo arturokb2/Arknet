@@ -455,7 +455,10 @@ class Create(CreateReestr):
         except:
             resdict_S['SMO_NAM'] = ''
         resdict_S['INV'] = self.inv_sp(pat.patient.in_t.kod) if pat.patient.in_t != None else 0
-        resdict_S['NOVOR'] = self.novor_sp(pat,err)
+        try:
+            resdict_S['NOVOR'] = self.novor_sp(pat,err)
+        except:
+            resdict_S['NOVOR'] = None
         resdict_S['VNOV_D'] =  int(pat.patient.vec) if pat.patient.vec != None and pat.patient.vec != 'None' and  pat.patient.vec != '' else None
         resdict_S['IDCASE'] = n
         resdict_S['USL_OK'] = 1

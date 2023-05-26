@@ -218,3 +218,5 @@ EMAIL_USE_TLS = True
 OLD_M = 62
 OLD_G = 57
 
+TIME_ZONE = 'Asia/Yekaterinburg'
+USE_TZ = True

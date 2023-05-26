@@ -21,19 +21,32 @@ border = Border(left=Side(border_style='thin',color='000000'),
                             top=Side(border_style='thin',color='000000'),
                             bottom=Side(border_style='thin', color='000000'))
 
-# def test_dec(func):
-#     def inner():
-#         func()
-#         # print(func.row)
-#     return inner
+import copy
 
 import functools
 import datetime
+
+def get_date_time():
+    now = datetime.datetime.now()
+    date = now.strftime("%d-%m-%Y,%H:%M")
+    return date
 def set_date(method):
     @functools.wraps(method)
     def wrapper(**kwargs):
-        sheet,row = method(**kwargs)
-        sheet.cell(row=row+3,column=1).value = datetime.datetime.now()
+        result = method(**kwargs)
+        date = get_date_time()
+        try:
+            for r in result:
+                sheet,row = r
+                try:
+                    row += 3
+                    sheet.merge_cells(f"A{sheet.cell(row=row, column=1).row}:B{sheet.cell(row=row, column=2).row}")
+                    sheet.cell(row=row,column=1).value = date
+                except:
+                    sheet.cell(row=row, column=1).value = date
+                sheet.cell(row=row, column=1).alignment = styles.Alignment(horizontal="left", vertical="center")
+        except:
+            pass
     return wrapper
 
 nzI60 = list(Ds.objects.values('kod').filter(kod__range=('I60','I60.9')))
@@ -798,7 +811,7 @@ def insert_sheet_P1(**kwargs):
             sheet.cell(row=row_, column=1).value = f'{dat[0]} - {len(dat[1])}'
             sheet.cell(row=row_, column=1).font = font
             sheet.row_dimensions[row_].height = 20
-        return sheet,row_
+        return [[sheet,row_]]
 
 def insert_sheet_implants(**kwargs):
     sheet = kwargs['sheet']
@@ -856,6 +869,7 @@ def insert_sheet_implants(**kwargs):
         sheet.cell(row=row, column=10).alignment = styles.Alignment(horizontal="center", vertical="center", wrap_text=True)
         for c in range(1, 11):
             sheet.cell(row=row, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
+@set_date
 def insert_sheet_P2(**kwargs):
     sheet = kwargs['sheet']
     # data = kwargs['data']
@@ -1065,7 +1079,8 @@ def insert_sheet_P2(**kwargs):
         sheet.cell(row=row_, column=5).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
         sheet.cell(row=row_, column=6).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
         sheet.cell(row=row_, column=7).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
-
+        return [[sheet,row_]]
+@set_date
 def insert_sheet_P19(**kwargs):
     sheet = kwargs['sheet']
     # data = kwargs['data']
@@ -1123,6 +1138,8 @@ def insert_sheet_P19(**kwargs):
         sheet.cell(row=row_, column=8).border = border
         sheet.cell(row=row_, column=8).font = font
         sheet.cell(row=row_, column=8).alignment = styles.Alignment(horizontal="left", vertical="center",wrap_text=True)
+        return [[sheet,row_]]
+@set_date
 def insert_sheet_P22(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1241,6 +1258,8 @@ def insert_sheet_P22(**kwargs):
                 for c in range(1,11):
                     sheet.cell(row=row_+1, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
                 row_+=1
+        return [[sheet,row_]]
+@set_date
 def insert_sheet_P24(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1273,6 +1292,7 @@ def insert_sheet_P24(**kwargs):
                 sheet.cell(row=row, column=n).alignment = styles.Alignment(horizontal="left", vertical="center")
             sheet.cell(row=row, column=n).font = font
             sheet.cell(row=row, column=n).border = border
+    return [[sheet,row]]
 def insert_sheet_nnn(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1386,6 +1406,7 @@ def insert_sheet_nnn(**kwargs):
     sheet.merge_cells(f"A{sheet.cell(row=row_, column=1).row}:B{sheet.cell(row=row_, column=2).row}")
     sheet.cell(row=row_, column=1).value = f'в 1-е сутки - {s1}'
     sheet.cell(row=row_, column=1).font = font
+@set_date
 def insert_sheet_a_oth_5(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1469,7 +1490,7 @@ def insert_sheet_a_oth_5(**kwargs):
             sheet.cell(row=row, column=2).alignment = styles.Alignment(horizontal="center", vertical="center")
             sheet.cell(row=row, column=3).value = age_data_filter if age_data_filter != 0 else None
             sheet.cell(row=row, column=3).alignment = styles.Alignment(horizontal="center", vertical="center")
-
+    return [[sheet,row]]
 
 
 def get_rez_a_oth_5(data):
@@ -1489,6 +1510,7 @@ def get_rez_a_oth_5(data):
     all_temp[3] = float('{0:.2f}'.format(all_temp[2]/all_temp[0]))
     return all_temp
 
+@set_date
 def insert_sheet_a_oth_7(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1585,7 +1607,7 @@ def insert_sheet_a_oth_7(**kwargs):
                         sheet.cell(row=row, column=4+v).value =  float('{0:.2f}'.format(rez[f][v])) if rez[f][v] != None and rez[f][v] != 0 else None
                         sheet.cell(row=row, column=4+v).alignment = styles.Alignment(horizontal="center", vertical="center")
                     row+=1
-
+    return [[sheet,row]]
 def get_rez_7(data):
     bf = BetterFilter()
     all_sp = IsfinKastSpecification('all') ^ IsfinKastSpecification('all','tym_oms') ^ IsfinKastSpecification('all','bez_polis') ^ IsfinKastSpecification('all','dr_oms') ^ \
@@ -1665,7 +1687,7 @@ def get_rez_7(data):
 
 
     return [all_temp,kd_temp,medium_kd,oper_temp,oper_count_temp,ymer_temp]
-
+@set_date
 def insert_sheet_a_oth_19(**kwargs):
     sheet = kwargs['sheet']
     data = kwargs['data']
@@ -1774,17 +1796,33 @@ def insert_sheet_a_oth_19(**kwargs):
     for l1 in list_data_2:
         row+=1
         sheet.cell(row=row, column=3).value = l1 if l1 != 0 else None
+    return [[sheet,row]]
+
+
+def get_rez_a_oth_20(data):
+    #item.sluchay.oper.filter(pr_osob__in=[23]).count()
+    _ = [0,0,0,0]
+    for d in data:
+        pr_osob = d.sluchay.oper.filter(pr_osob__in=[23])
+        oslo = d.sluchay.oper.count()
+        if pr_osob.count() > 0:
+            _[0] += 1
+            _[1] += pr_osob.count()
+            if oslo > 0:
+                _[2] += 1
+            _[3] = int(d.le_vr.kd) if d.le_vr and d.le_vr.kd != '' else 0
+    return _
 
 
 
+
+@set_date
 def insert_sheet_a_oth_20(**kwargs):
     sheet = kwargs['sheet']
-    # data = kwargs['data']
     name = kwargs['name']
     date_1 = kwargs['date_1']
     date_2 = kwargs['date_2']
     filters = kwargs['filters']
-
     sheet.cell(row=3, column=1).value = f'За период с {date_1.strftime("%d.%m.%Y")} по {date_2.strftime("%d.%m.%Y")} г.'
     sheet.cell(row=5, column=1).value = str(name).capitalize()
 
@@ -1792,68 +1830,57 @@ def insert_sheet_a_oth_20(**kwargs):
         filter = []
         height = 0
         for f in filters:
-            filter.append(f"{f['filter']}:{f['value']}")
-            height += 20
-        sheet.row_dimensions[6].height = height
-        sheet.cell(row=6, column=1).value = '\n'.join(filter)
-
-    bf = BetterFilter()
-    sp = OtdSpecification() ^ ProfkSpecification() ^ OperCountSpecification() ^ EndosOper() ^ OsloCountAllSpecification()
-
-    temp = []
-    for d in kwargs['data']:
-        for p in bf.filter(d, sp):
-            temp.append(bf.format_list(p))
-            
-    res_set = list(set([t[0] for t in temp]))
-    res = []
-    for r in res_set:
-        res.append([
-            r,
-            []
-        ])
-    for r in res:
-        for t in temp:
-            if r[0] == t[0]:
-                r[1].append(t[1])
-            r[1] = list(set(r[1]))
-
-    res_set.clear()
-    for r in res:
-        tt = []
-        tt.append(r[0])
-        for rr in r[1]:
-            tt.append([rr,0,0,0,0])
-        res_set.append(tt)
-    # print(res_set)
-    # for t in temp:
-    #     x = (t[0],(t[1],None,None,None,None))
-    #     res_set.add(x)
-    # res_set = [list(r[rr]) for r in res_set for rr in range(len(r)) if r!=0 ]
-
-    # print(res_set)
-    # for t in temp:
-    #     for r in res_set:
-    #         if r[0] == t[0] and r[1] == t[1]:
-    #             pass
-    #             r[2] = r[2] + t[2] if r[2] != None else t[2]
-    #             r[3] = r[3] + t[3] if r[3] != None else t[3]
-    #             r[4] = r[4] + t[4] if r[4] != None else t[4]
-    row = 7
-
-    for i, res in enumerate(res_set):
-        row +=1
-        for l, r in enumerate(res):
-            if l == 0:
-                sheet.cell(row=row, column=1 + l).value = r if r != 0 else ''
+            if f['filter'] != 'Ds основной ':
+                if f['value'] != '':
+                    filter.append(f"{f['filter']}:{f['value']}")
             else:
-                for n,prof in enumerate(r):
-                    if n == 0:
-                        sheet.cell(row=row, column=2).value = r[0] if r[0] != 0 else ''
-                    else:
-                        row += 1
-                        sheet.cell(row=row, column=2).value = r[0] if r[0] != 0 else ''
+                if f['value'] != 'С  по ':
+                    filter.append(f"{f['filter']}:{f['value']}")
+            height += 10
 
+        sheet.row_dimensions[8].height = height
+        sheet.cell(row=8, column=1).value = '\n'.join(filter)
+
+    data = get_list_otd_prof(kwargs['data'])
+    row = 10
+    otd_prof_sl_all = []
+    for d in data:
+        row+=1
+        sheet.cell(row=row, column=1).value = d[0][0]
+        prof_sl_all = []
+        for prof in d[1]:
+            result = get_rez_a_oth_20(prof[1])
+            for r in range(len(result)):
+                sheet.cell(row=row, column=3+r).value = result[r]
+            prof_sl_all.append(result)
+            otd_prof_sl_all.append(result)
+            sheet.row_dimensions[row].height = 25
+            sheet.cell(row=row, column=2).alignment = styles.Alignment(horizontal="left", vertical="center",
+                                                                       wrap_text=True)
+            sheet.cell(row=row, column=2).value = prof[0]
+
+            for b in range(2,7):
+                sheet.cell(row=row, column=b).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
+            row +=1
+
+
+        else:
+            if len(prof_sl_all) > 0:
+                sheet.cell(row=row, column=1).value = 'Итого'
+                sheet.cell(row=row, column=1).alignment = styles.Alignment(horizontal="center", vertical="center")
+                r = None
+                for o in range(len(prof_sl_all)):
+                    if o == 0:
+                        r = numpy.array(prof_sl_all[o])
+                    else:
+                        r += numpy.array(prof_sl_all[o])
+                rez = r.tolist()
+                for r in range(len(rez)):
+                    sheet.cell(row=row , column=3+r).value = rez[r] if rez[r] != 0 else None
+                for b in range(1, 7):
+                    sheet.cell(row=row, column=b).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
+        # print(d[1][0][1])
+    return [[sheet,row]]
 def get_rez_a_oth_23_list(data):
     v1 = 0
     v2 = 0
@@ -1877,6 +1904,7 @@ def get_rez_a_oth_23_list(data):
             v6 += 1
     return [v1,v2,v3,v4,v5,v6]
 
+@set_date
 def insert_sheet_a_oth_23(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1991,6 +2019,7 @@ def insert_sheet_a_oth_23(**kwargs):
             sheet.cell(row=row, column=i).alignment = styles.Alignment(horizontal="center", vertical="center")
             sheet.cell(row=row, column=i).border = border
         row+=1
+    return [[sheet,row]]
 def get_rez_32_list(data,ds):
     temp = []
     ds_list = []
@@ -2262,6 +2291,7 @@ def set_rez_32_info(d,temp1,temp2,temp3):
             if d.sluchay.rslt and  d.sluchay.rslt.id_tip in [105,106]:
                 temp3[15]+=1
 
+
 def insert_sheet_a_oth_32(**kwargs):
     sheet = kwargs['sheet'][0]
     sheet1 = kwargs['sheet'][1]
@@ -2324,7 +2354,10 @@ def insert_sheet_a_oth_32(**kwargs):
         for d in range(len(data)):
             sheet.cell(row=row, column=2+d).value = data[d] if data[d] != 0 else None
             sheet.cell(row=row, column=2+d).alignment = styles.Alignment(horizontal="center", vertical="center")
-    
+
+    sheet.cell(row=row + 3, column=1).value = get_date_time()
+    sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
+
     ### Список
     rez_T51 = get_rez_32_list(kwargs['data'],'T51')
     rez_T40 = get_rez_32_list(kwargs['data'],'T40')
@@ -2382,6 +2415,9 @@ def insert_sheet_a_oth_32(**kwargs):
     for n,r in enumerate(sorted(rez_none,key=itemgetter('fio')),1):
         row+=1
         set_rez_32_list(sheet1,row,n,r)
+    sheet1.cell(row=row + 3, column=1).value = get_date_time()
+    sheet1.merge_cells(f"A{sheet1.cell(row=row + 3, column=1).row}:B{sheet1.cell(row=row + 3, column=2).row}")
+
 
 def insert_sheet_a_oth_36(**kwargs):
     ds60_64 = list(Ds.objects.values('kod').filter(kod__range=('I60', 'I64.9')))
@@ -2569,6 +2605,10 @@ def insert_sheet_a_oth_36(**kwargs):
         row += 1
         for n,res in enumerate(result):
             sheet.cell(row=row, column=2+n).value = res if res != 0 else None
+
+    sheet.cell(row=row+3, column=1).value = get_date_time()
+    sheet.merge_cells(f"A{sheet.cell(row=row+3, column=1).row}:B{sheet.cell(row=row+3, column=2).row}")
+
     temp = []
     data_4_5 = set(data_4_5)
     ds60_64_all = set(ds60_64_all)
@@ -2611,6 +2651,9 @@ def insert_sheet_a_oth_36(**kwargs):
         sheet2.cell(row=row, column=11).value = result['m_roj']
         sheet2.cell(row=row, column=11).alignment = styles.Alignment(horizontal="left", vertical="top",wrap_text=True)
 
+    sheet2.cell(row=row+3, column=1).value = get_date_time()
+    sheet2.merge_cells(f"A{sheet2.cell(row=row+3, column=1).row}:B{sheet2.cell(row=row+3, column=2).row}")
+
     temp.clear()
     for p in data_4_5:
         ord = OrderedDict()
@@ -2647,6 +2690,9 @@ def insert_sheet_a_oth_36(**kwargs):
         sheet3.cell(row=row, column=10).value = result['vds']
         sheet3.cell(row=row, column=11).value = result['m_roj']
         sheet3.cell(row=row, column=11).alignment = styles.Alignment(horizontal="left", vertical="top",wrap_text=True)
+
+    sheet3.cell(row=row + 3, column=1).value = get_date_time()
+    sheet3.merge_cells(f"A{sheet3.cell(row=row + 3, column=1).row}:B{sheet3.cell(row=row + 3, column=2).row}")
 
 def insert_sheet_a_oth_37(**kwargs):
     sheet = kwargs['sheet'][0]
@@ -3136,6 +3182,9 @@ def insert_sheet_a_oth_37(**kwargs):
         for n, res in enumerate(dat):
             sheet.cell(row=row, column=4 + n).value = res if res != 0 else None
 
+    sheet.cell(row=row + 3, column=1).value = get_date_time()
+    sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
+
     data2_all_60_64 = [0,0,0,0]
     data2_all_65_69 = [0,0,0,0]
     data2_all_70_74 = [0,0,0,0]
@@ -3352,6 +3401,8 @@ def insert_sheet_a_oth_37(**kwargs):
                 sheet1.cell(row=row, column=8).value = res if res != 0 else None
             else:
                 continue
+    sheet1.cell(row=row + 3, column=1).value = get_date_time()
+    sheet1.merge_cells(f"A{sheet1.cell(row=row + 3, column=1).row}:B{sheet1.cell(row=row + 3, column=2).row}")
 def rez_oth_a_oth_29(data,all=None):
     rez = [0,0,0,0]
     for d in data:
@@ -3374,6 +3425,7 @@ def rez_oth_a_oth_29(data,all=None):
                             rez[3] += 1
     return rez
 
+@set_date
 def insert_sheet_a_oth_29(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -3458,6 +3510,7 @@ def insert_sheet_a_oth_29(**kwargs):
                 for c in range(1, 6):
                     sheet.cell(row=row, column=c).border = styles.Border(
                         bottom=styles.Side(border_style='thin', color='000000'))
+    return [[sheet,row]]
 class GroupP1(AnnualReportABC):
     def __init__(self,user,request):
         super().__init__(user,request)
@@ -3569,7 +3622,7 @@ class GroupP2(AnnualReportABC):
             os.remove(file)
             sheet = wb.active
             patients = PatientsDataFiltrs(self.date_1,self.date_2,self.user,self.request)
-            print(len(patients.patients))
+
             dic = dict([('sheet',sheet),('data',patients.patients),('name',self.user.statistics_type.name),
                         ('date_1',self.date_1),('date_2',self.date_2),('filters',self.filters_list())])
             insert_sheet_P2(**dic)
@@ -3753,7 +3806,7 @@ class GroupP22(AnnualReportABC):
                         data.append(p)
             dic = dict([('sheet', sheet), ('data', data), ('name', self.user.statistics_type.name),
                         ('date_1', self.date_1), ('date_2', self.date_2),('otd',self.otd),('otdels',self.otdels)])
-            sheet = insert_sheet_P22(**dic)
+            insert_sheet_P22(**dic)
             wb.save(self.path() + f'group_p22_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,
                                                           {'type': 'report_group_data', 'text': 'Отчет cфромирован'})
@@ -4023,6 +4076,8 @@ class VaultOtd(AnnualReportABC):
                 except ZeroDivisionError:
                     v = 0
                 sheet1.cell(row=33, column=4).value = f'{v}%' if v != 0 else None
+                sheet1.cell(row=35, column=1).value = get_date_time()
+                sheet1.merge_cells(f"A{sheet1.cell(row=35, column=1).row}:B{sheet1.cell(row=35, column=2).row}")
                 #Лист2
 
                 data_20_29 = []
@@ -4126,7 +4181,8 @@ class VaultOtd(AnnualReportABC):
                     sheet2.cell(row=12, column=7).value = rez[2] if rez[2] != 0 else None
                     sheet2.cell(row=12, column=8).value = rez[3] if rez[3] != 0 else None
                     sheet2.cell(row=12, column=9).value = rez[4] if rez[4] != 0 else None
-
+                sheet2.cell(row=15, column=1).value = get_date_time()
+                sheet2.merge_cells(f"A{sheet2.cell(row=15, column=1).row}:B{sheet2.cell(row=15, column=2).row}")
                 #Лист3
                 for o in range(len(t_trv_all)):
                     if o == 0:
@@ -4149,7 +4205,8 @@ class VaultOtd(AnnualReportABC):
                     sheet3.cell(row=row, column=3).value = rez[0] if rez[0] != 0 else None
                     sheet3.cell(row=row, column=4).value = 100 if rez[0] != 0 else None
                     sheet3.cell(row=row, column=5).value = rez[1] if rez[1] != 0 else None
-
+                sheet3.cell(row=row+3, column=1).value = get_date_time()
+                sheet3.merge_cells(f"A{sheet3.cell(row=row+3, column=1).row}:B{sheet3.cell(row=row+3, column=2).row}")
                 #Лист4
                 rez1 = self.rez_oth_1_4(data,t='г.Тюменю',c_oksm=643)
                 rez2 = self.rez_oth_1_4(data, t='Юг Тюм.обл.кроме Тюм.р-н', c_oksm=643)
@@ -4223,7 +4280,8 @@ class VaultOtd(AnnualReportABC):
                 sheet4.cell(row=row, column=4).value = v if v != 0 else None
                 sheet4.cell(row=row, column=5).value = ing[3] if ing[3] != 0 else None
                 sheet4.cell(row=row, column=6).value = ing[4] if ing[4] != 0 else None
-
+                sheet4.cell(row=row+3, column=1).value = get_date_time()
+                sheet4.merge_cells(f"A{sheet4.cell(row=row+3, column=1).row}:B{sheet4.cell(row=row+3, column=2).row}")
                 # Лист5
                 list_lpu = get_list_lpu(data)
                 row=6
@@ -4275,10 +4333,12 @@ class VaultOtd(AnnualReportABC):
                     sheet5.cell(row=row, column=6).alignment = styles.Alignment(horizontal="center", vertical="center")
                     for r in range(6):
                         sheet5.cell(row=row, column=1+r).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
-
+                    sheet5.cell(row=row+3, column=1).value = get_date_time()
+                    sheet5.merge_cells(f"A{sheet5.cell(row=row+3, column=1).row}:B{sheet5.cell(row=row+3, column=2).row}")
             wb.save(self.path() + f'otd_rep_1_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_1_{self.user.user.id}.xlsx'})
+            return [[]]
     
     def oth_2(self,data):
          async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'error_messages'})
@@ -4375,7 +4435,8 @@ class VaultOtd(AnnualReportABC):
             sheet.cell(row=row, column=2).value = count_oper if count_oper != 0 else None
             sheet.cell(row=row, column=3).value = 100.0 if count_oper != 0 else None
             sheet.cell(row=row, column=4).value = all_ek if all_ek != 0 else None
-
+            sheet.cell(row=row+3, column=1).value = get_date_time()
+            sheet.merge_cells(f"A{sheet.cell(row=row+3, column=1).row}:B{sheet.cell(row=row+3, column=2).row}")
             wb.save(self.path() + f'otd_rep_3_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_3_{self.user.user.id}.xlsx'})
@@ -4418,6 +4479,8 @@ class VaultOtd(AnnualReportABC):
                     if n <= 10:
                         sheet.cell(row=row, column=2+n).value = v if v != 0 else None
                         sheet.cell(row=row, column=2+n).alignment = styles.Alignment(horizontal="center",vertical="center")
+            sheet.cell(row=row + 3, column=1).value = get_date_time()
+            sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
             wb.save(self.path() + f'otd_rep_4_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_4_{self.user.user.id}.xlsx'})
@@ -4449,6 +4512,8 @@ class VaultOtd(AnnualReportABC):
                 for n,v in enumerate(r):
                     sheet1.cell(row=row, column=3+n).value = v if v != 0 else None
                     sheet1.cell(row=row, column=3+n).alignment = styles.Alignment(horizontal="center", vertical="center")
+            sheet1.cell(row=row + 3, column=1).value = get_date_time()
+            sheet1.merge_cells(f"A{sheet1.cell(row=row + 3, column=1).row}:B{sheet1.cell(row=row + 3, column=2).row}")
             #Лист2
             sheet2.cell(row=3, column=1).value = f'отделение {otd}'
             sheet2.cell(row=5,column=1).value = f'За период с {self.date_1.strftime("%d.%m.%Y")} по {self.date_2.strftime("%d.%m.%Y")} г.'
@@ -4468,7 +4533,8 @@ class VaultOtd(AnnualReportABC):
                         v = 0
                     sheet2.cell(row=row, column=2 + _0[n2]).value= v if v != 0 else None
                     sheet2.cell(row=row, column=2 + _0[n2]).alignment = styles.Alignment(horizontal="center",vertical="center")
-
+            sheet2.cell(row=row + 3, column=1).value = get_date_time()
+            sheet2.merge_cells(f"A{sheet2.cell(row=row + 3, column=1).row}:B{sheet2.cell(row=row + 3, column=2).row}")
 
             rez3_4 = get_list_pers(data)
             _ = []
@@ -4488,6 +4554,8 @@ class VaultOtd(AnnualReportABC):
                 for n,v in enumerate(r):
                     sheet3.cell(row=row, column=3+n).value = v if v != 0 else None
                     sheet3.cell(row=row, column=3+n).alignment = styles.Alignment(horizontal="center", vertical="center")
+            sheet3.cell(row=row + 3, column=1).value = get_date_time()
+            sheet3.merge_cells(f"A{sheet3.cell(row=row + 3, column=1).row}:B{sheet3.cell(row=row + 3, column=2).row}")
             #Лист4
             sheet4.cell(row=3, column=1).value = f'отделение {otd}'
             sheet4.cell(row=5,column=1).value = f'За период с {self.date_1.strftime("%d.%m.%Y")} по {self.date_2.strftime("%d.%m.%Y")} г.'
@@ -4509,6 +4577,8 @@ class VaultOtd(AnnualReportABC):
                     sheet4.cell(row=row, column=2 + _0[n2]).value = v if v != 0 else None
                     sheet4.cell(row=row, column=2 + _0[n2]).alignment = styles.Alignment(horizontal="center",
                                                                                          vertical="center")
+            sheet4.cell(row=row + 3, column=1).value = get_date_time()
+            sheet4.merge_cells(f"A{sheet4.cell(row=row + 3, column=1).row}:B{sheet4.cell(row=row + 3, column=2).row}")
             #Лист5
             I60 = []
             I61 = []
@@ -4593,6 +4663,9 @@ class VaultOtd(AnnualReportABC):
                 for n,v in enumerate(a):
                     sheet5.cell(row=row, column=2+n).value = v if v != 0 else None
 
+            sheet5.cell(row=row + 3, column=1).value = get_date_time()
+            sheet5.merge_cells(f"A{sheet5.cell(row=row + 3, column=1).row}:B{sheet5.cell(row=row + 3, column=2).row}")
+
             #Лист6
             I61 = []
             I63 = []
@@ -4656,6 +4729,9 @@ class VaultOtd(AnnualReportABC):
                 row += 1
                 for n, v in enumerate(a):
                     sheet6.cell(row=row, column=2 + n).value = v if v != 0 else None
+
+            sheet6.cell(row=row + 3, column=1).value = get_date_time()
+            sheet6.merge_cells(f"A{sheet6.cell(row=row + 3, column=1).row}:B{sheet6.cell(row=row + 3, column=2).row}")
 
             wb.save(self.path() + f'otd_rep_5_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
@@ -4766,6 +4842,8 @@ class VaultOtd(AnnualReportABC):
                 sheet.merge_cells(f"A{sheet.cell(row=row, column=1).row}:B{sheet.cell(row=row, column=2).row}")
                 sheet.cell(row=row, column=1).value = f'в 1-е сутки - {s1}'
                 sheet.cell(row=row, column=1).font = font
+            sheet.cell(row=row + 3, column=1).value = get_date_time()
+            sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
             wb.save(self.path() + f'otd_rep_b_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_b_{self.user.user.id}.xlsx'})
@@ -4820,6 +4898,8 @@ class VaultOtd(AnnualReportABC):
                 sheet.cell(row=row, column=5).value = f'4.{d["posl"][:40]}'
                 for c in range(1,6):
                     sheet.cell(row=row, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
+            sheet.cell(row=row + 3, column=1).value = get_date_time()
+            sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
             wb.save(self.path() + f'otd_rep_v_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_v_{self.user.user.id}.xlsx'})
@@ -4925,7 +5005,8 @@ class VaultOtd(AnnualReportABC):
                 sheet.cell(row=row, column=5).alignment = styles.Alignment(horizontal="center", vertical="center")
                 sheet.cell(row=row, column=6).value = rez[3] if rez[3] != 0 else None
                 sheet.cell(row=row, column=6).alignment = styles.Alignment(horizontal="center", vertical="center")
-
+            sheet.cell(row=row + 3, column=1).value = get_date_time()
+            sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
             wb.save(self.path() + f'otd_rep_g_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_g_{self.user.user.id}.xlsx'})
@@ -5038,15 +5119,21 @@ class VaultOtd(AnnualReportABC):
                     r = numpy.array(count_all_vra[o])
                 else:
                     r += numpy.array(count_all_vra[o])
-            rez = r.tolist()
-            row+=1
-            sheet.cell(row=row, column=2).value = 'ИТОГО'
-            sheet.cell(row=row, column=2).alignment = styles.Alignment(horizontal="center", vertical="center")
-            for n,v in enumerate(rez):
-                sheet.cell(row=row, column=3 + n).value = v if v != 0 else None
-                sheet.cell(row=row, column=3 + n).alignment = styles.Alignment(horizontal="center", vertical="center")
-            for c in range(1, 13):
-                sheet.cell(row=row, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
+            try:
+                rez = r.tolist()
+                row+=1
+                sheet.cell(row=row, column=2).value = 'ИТОГО'
+                sheet.cell(row=row, column=2).alignment = styles.Alignment(horizontal="center", vertical="center")
+                for n,v in enumerate(rez):
+                    sheet.cell(row=row, column=3 + n).value = v if v != 0 else None
+                    sheet.cell(row=row, column=3 + n).alignment = styles.Alignment(horizontal="center", vertical="center")
+                for c in range(1, 13):
+                    sheet.cell(row=row, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
+            except:
+                #Подумать
+                ...
+            sheet.cell(row=row + 3, column=1).value = get_date_time()
+            sheet.merge_cells(f"A{sheet.cell(row=row + 3, column=1).row}:B{sheet.cell(row=row + 3, column=2).row}")
             wb.save(self.path() + f'otd_rep_d_{self.user.user.id}.xlsx')
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'report_vault_otd', 'text': 'Отчет cфромирован'})
             async_to_sync(get_channel_layer().group_send)(self.user_group_name,{'type': 'download_vault_otd','text': self.path() + f'otd_rep_d_{self.user.user.id}.xlsx'})
@@ -5286,7 +5373,14 @@ class AOth20(AnnualReportABC):
             sheet = wb.active
             patients = PatientsData(self.date_1, self.date_2, self.user)
             patients.sluchays()
-            dic = dict([('sheet', sheet), ('data', patients.patients), ('name', self.user.statistics_type.name),
+            # patients_filter = PatientsDataFiltrs(self.date_1, self.date_2, self.user, self.request)
+            # data_filter = patients_filter.patients
+            # print(data_filter)
+            data = []
+            for d in patients.patients:
+                if d.sluchay.oper.filter(pr_osob__in=[23]).count() > 0:
+                    data.append(d)
+            dic = dict([('sheet', sheet), ('data', data), ('name', self.user.statistics_type.name),
                         ('date_1', self.date_1), ('date_2', self.date_2),('filters',self.filters_list())])
             insert_sheet_a_oth_20(**dic)
             wb.save(self.path() + f'a_oth_20_{self.user.user.id}.xlsx')
@@ -5582,12 +5676,6 @@ def ReferenceReport(user,request):
     if type_fun == 'vault_otd_rep':
         report = VaultOtd(user, request)
         report.create()
-    # elif type_fun == 'vault_otd_rep_nnn':
-    #     report = VaultOtdNNN(user,request)
-    #     report.create()
-    # elif type_fun == 'vault_otd_rep_hh':
-    #     report = VaultOtdHH(user,request)
-    #     report.create()
 
 
     type_fun = request.get('type_report')
