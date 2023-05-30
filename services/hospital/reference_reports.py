@@ -869,7 +869,7 @@ def insert_sheet_implants(**kwargs):
         sheet.cell(row=row, column=10).alignment = styles.Alignment(horizontal="center", vertical="center", wrap_text=True)
         for c in range(1, 11):
             sheet.cell(row=row, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
-@set_date
+# @set_date
 def insert_sheet_P2(**kwargs):
     sheet = kwargs['sheet']
     # data = kwargs['data']
@@ -1079,8 +1079,8 @@ def insert_sheet_P2(**kwargs):
         sheet.cell(row=row_, column=5).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
         sheet.cell(row=row_, column=6).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
         sheet.cell(row=row_, column=7).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
-        return [[sheet,row_]]
-@set_date
+        # return [[sheet,row_]]
+# @set_date
 def insert_sheet_P19(**kwargs):
     sheet = kwargs['sheet']
     # data = kwargs['data']
@@ -1138,8 +1138,8 @@ def insert_sheet_P19(**kwargs):
         sheet.cell(row=row_, column=8).border = border
         sheet.cell(row=row_, column=8).font = font
         sheet.cell(row=row_, column=8).alignment = styles.Alignment(horizontal="left", vertical="center",wrap_text=True)
-        return [[sheet,row_]]
-@set_date
+        # return [[sheet,row_]]
+# @set_date
 def insert_sheet_P22(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1258,8 +1258,8 @@ def insert_sheet_P22(**kwargs):
                 for c in range(1,11):
                     sheet.cell(row=row_+1, column=c).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
                 row_+=1
-        return [[sheet,row_]]
-@set_date
+        # return [[sheet,row_]]
+# @set_date
 def insert_sheet_P24(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1292,7 +1292,7 @@ def insert_sheet_P24(**kwargs):
                 sheet.cell(row=row, column=n).alignment = styles.Alignment(horizontal="left", vertical="center")
             sheet.cell(row=row, column=n).font = font
             sheet.cell(row=row, column=n).border = border
-    return [[sheet,row]]
+    # return [[sheet,row]]
 def insert_sheet_nnn(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1406,7 +1406,7 @@ def insert_sheet_nnn(**kwargs):
     sheet.merge_cells(f"A{sheet.cell(row=row_, column=1).row}:B{sheet.cell(row=row_, column=2).row}")
     sheet.cell(row=row_, column=1).value = f'в 1-е сутки - {s1}'
     sheet.cell(row=row_, column=1).font = font
-@set_date
+# @set_date
 def insert_sheet_a_oth_5(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1490,7 +1490,7 @@ def insert_sheet_a_oth_5(**kwargs):
             sheet.cell(row=row, column=2).alignment = styles.Alignment(horizontal="center", vertical="center")
             sheet.cell(row=row, column=3).value = age_data_filter if age_data_filter != 0 else None
             sheet.cell(row=row, column=3).alignment = styles.Alignment(horizontal="center", vertical="center")
-    return [[sheet,row]]
+    # return [[sheet,row]]
 
 
 def get_rez_a_oth_5(data):
@@ -1510,7 +1510,7 @@ def get_rez_a_oth_5(data):
     all_temp[3] = float('{0:.2f}'.format(all_temp[2]/all_temp[0]))
     return all_temp
 
-@set_date
+# @set_date
 def insert_sheet_a_oth_7(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1607,7 +1607,7 @@ def insert_sheet_a_oth_7(**kwargs):
                         sheet.cell(row=row, column=4+v).value =  float('{0:.2f}'.format(rez[f][v])) if rez[f][v] != None and rez[f][v] != 0 else None
                         sheet.cell(row=row, column=4+v).alignment = styles.Alignment(horizontal="center", vertical="center")
                     row+=1
-    return [[sheet,row]]
+    # return [[sheet,row]]
 def get_rez_7(data):
     bf = BetterFilter()
     all_sp = IsfinKastSpecification('all') ^ IsfinKastSpecification('all','tym_oms') ^ IsfinKastSpecification('all','bez_polis') ^ IsfinKastSpecification('all','dr_oms') ^ \
@@ -1687,7 +1687,7 @@ def get_rez_7(data):
 
 
     return [all_temp,kd_temp,medium_kd,oper_temp,oper_count_temp,ymer_temp]
-@set_date
+# @set_date
 def insert_sheet_a_oth_19(**kwargs):
     sheet = kwargs['sheet']
     data = kwargs['data']
@@ -1796,7 +1796,7 @@ def insert_sheet_a_oth_19(**kwargs):
     for l1 in list_data_2:
         row+=1
         sheet.cell(row=row, column=3).value = l1 if l1 != 0 else None
-    return [[sheet,row]]
+    # return [[sheet,row]]
 
 
 def get_rez_a_oth_20(data):
@@ -1816,7 +1816,7 @@ def get_rez_a_oth_20(data):
 
 
 
-@set_date
+# @set_date
 def insert_sheet_a_oth_20(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -1880,7 +1880,7 @@ def insert_sheet_a_oth_20(**kwargs):
                 for b in range(1, 7):
                     sheet.cell(row=row, column=b).border = styles.Border(bottom=styles.Side(border_style='thin', color='000000'))
         # print(d[1][0][1])
-    return [[sheet,row]]
+    # return [[sheet,row]]
 def get_rez_a_oth_23_list(data):
     v1 = 0
     v2 = 0
@@ -1904,7 +1904,7 @@ def get_rez_a_oth_23_list(data):
             v6 += 1
     return [v1,v2,v3,v4,v5,v6]
 
-@set_date
+# @set_date
 def insert_sheet_a_oth_23(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -2019,7 +2019,7 @@ def insert_sheet_a_oth_23(**kwargs):
             sheet.cell(row=row, column=i).alignment = styles.Alignment(horizontal="center", vertical="center")
             sheet.cell(row=row, column=i).border = border
         row+=1
-    return [[sheet,row]]
+    # return [[sheet,row]]
 def get_rez_32_list(data,ds):
     temp = []
     ds_list = []
@@ -3425,7 +3425,7 @@ def rez_oth_a_oth_29(data,all=None):
                             rez[3] += 1
     return rez
 
-@set_date
+# @set_date
 def insert_sheet_a_oth_29(**kwargs):
     sheet = kwargs['sheet']
     name = kwargs['name']
@@ -3510,7 +3510,7 @@ def insert_sheet_a_oth_29(**kwargs):
                 for c in range(1, 6):
                     sheet.cell(row=row, column=c).border = styles.Border(
                         bottom=styles.Side(border_style='thin', color='000000'))
-    return [[sheet,row]]
+    # return [[sheet,row]]
 class GroupP1(AnnualReportABC):
     def __init__(self,user,request):
         super().__init__(user,request)
@@ -3622,7 +3622,7 @@ class GroupP2(AnnualReportABC):
             os.remove(file)
             sheet = wb.active
             patients = PatientsDataFiltrs(self.date_1,self.date_2,self.user,self.request)
-
+            print(len(patients.patients))
             dic = dict([('sheet',sheet),('data',patients.patients),('name',self.user.statistics_type.name),
                         ('date_1',self.date_1),('date_2',self.date_2),('filters',self.filters_list())])
             insert_sheet_P2(**dic)
