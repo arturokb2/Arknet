@@ -6,8 +6,8 @@ from services.hospital.patient import Patients
 from okb2.models import *
 from datetime import datetime
 import time
-from hospital.models import Oper
-
+from hospital.models import Oper,Patient
+from django.db.models import Q
 class Reports(Patients):
     def __init__(self,user,request):
         super().__init__(user, request)
@@ -23,6 +23,10 @@ class Reports(Patients):
         f = []
         # print(filters)
         # print(sluchays)
+        if filters.get('neiz', None) != None:
+            patient_neiz_list = Patient.objects.filter(
+                Q(fam__istartswith='НЕЙ') | Q(fam__istartswith='неи') | Q(fam=None) | Q(fam='')).values('id')
+            patient_neiz = [p['id'] for p in patient_neiz_list]
         for sluchay in sluchays:
             f_ = True
             if filters.get('datv',None) != None:
@@ -54,6 +58,10 @@ class Reports(Patients):
                     if f_ == False: continue
                     # f_ = sluchay['le_vr'].prof_k.k_prname == filters.get('prof')['prof'] if sluchay['le_vr'].prof_k != None else False
                     # if f_ == False: continue
+            if filters.get('neiz', None) != None:
+                if filters.get('neiz')['neiz'] != '':
+                    f_ = sluchay['patient'].id in patient_neiz
+                    if f_ == False: continue
             if filters.get('fam', None) != None:
                 if filters.get('fam')['fam'] != '':
                     f_ = sluchay['patient'].fam == filters.get('fam')['fam']

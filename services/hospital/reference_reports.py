@@ -3747,12 +3747,13 @@ class GroupP19(AnnualReportABC):
             patients.sluchays()
             data = []
             for p in patients.patients:
-                if (p.sluchay.icx and p.sluchay.icx.id_iz in(105,106))\
-                        or (p.sluchay.rslt and p.sluchay.rslt.id_tip in (105,106)):
-                    if (p.patient_year) <= 65:
+                # if (p.sluchay.icx and p.sluchay.icx.id_iz in(105,106))\
+                #         or (p.sluchay.rslt and p.sluchay.rslt.id_tip in (105,106)):
+                if (p.sluchay.icx and p.sluchay.icx.id_iz == 106):
+                    if (p.patient_year) < 65:
                         ## в первые сутки ???
-                        if p.sluchay.datp == p.sluchay.datv:
-                            data.append(p)
+                        # if p.sluchay.datp == p.sluchay.datv:
+                        data.append(p)
             dic = dict([('sheet', sheet), ('data', data), ('name', self.user.statistics_type.name),
                         ('date_1', self.date_1), ('date_2', self.date_2)])
             insert_sheet_P19(**dic)

@@ -168,6 +168,7 @@ Vue.component('all_filter', {
           <li class="list-group-item"><input type="checkbox" id="metod_hmp">Вид ВТМП</li>
           <li class="list-group-item"><input type="checkbox" id="vid_hmp">Методы ВТМП</li>
           <li class="list-group-item"><input type="checkbox" id="ymer_ymer">Умершие</li>
+          <li class="list-group-item"><input type="checkbox" id="neiz">Неизвестный</li>
         </ul>
   </div>`
 })
@@ -1665,12 +1666,17 @@ function all_filters() {
             else if (this.id == 'fam_filt' || this.id == 'im_filt' || this.id == 'ot_filt' 
                 || this.id == 'ksg_osn_filt' || this.id == 'reg_obl_rai_filt'
                 || this.id == 'stay_in_mo_filt' || this.id == 'time_minuts_po_filt' || this.id == 'man_list'
-                || this.id == 'metod_hmp' || this.id == 'vid_hmp' || this.id == 'ymer_ymer' || this.id == 'disability_filt') {
+                || this.id == 'metod_hmp' || this.id == 'vid_hmp' || this.id == 'ymer_ymer' || this.id == 'disability_filt'
+                || this.id == 'neiz'
+            ) {
                 let inp = document.createElement("input")
                 inp.setAttribute('id', `in_${this.id}`)
                 inp.type = 'text'
                 if ( this.id == 'ymer_ymer'){
                 inp.value = 'Умершие'
+                }
+                if (this.id == 'neiz'){
+                    inp.value = 'Неизвестный'
                 }
                 if ( this.id == 'disability_filt'){
                 inp.value = 'Закрыт'
@@ -1959,6 +1965,11 @@ function get_checked_filters() {
          else if (div.id == 'ymer_ymer_block') {
             filter.ymer_ymer = {
                 ymer_ymer: div.childNodes[1].value
+            }
+        }
+         else if (div.id == 'neiz_block') {
+            filter.neiz = {
+                neiz: div.childNodes[1].value
             }
         }
         //  else if (div.id == 'disability_filt_block') {
