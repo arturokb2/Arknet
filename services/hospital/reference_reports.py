@@ -301,16 +301,19 @@ def get_list_oper(data):
 
 def get_list_otd_prof(data):
     otds_list = []
+    qwe = []
     for d in data:
-        if d.sluchay.otd.naim not in otds_list:
+        if d.sluchay.otd and d.sluchay.otd.naim not in otds_list:
             otds_list.append(d.sluchay.otd.naim)
+        if not d.sluchay.otd:
+            qwe.append(d.sluchay.nib)
 
     otds_prof_list = []
     for o in otds_list:
         temp = [[],[]]
         temp[0].append(o)
         for d in data:
-            if o == d.sluchay.otd.naim:
+            if d.sluchay.otd and o == d.sluchay.otd.naim:
                 if d.sluchay.le_vr and d.sluchay.le_vr.prof_k:
                     if d.sluchay.le_vr.prof_k.k_prname not in temp[1]:
                         temp[1].append(d.sluchay.le_vr.prof_k.k_prname)
@@ -322,12 +325,12 @@ def get_list_otd_prof(data):
 
     for otds_prof in range(len(otds_prof_list)):
         for d in data:
-            if otds_prof_list[otds_prof][0][0] == d.sluchay.otd.naim:
+            if d.sluchay.otd and otds_prof_list[otds_prof][0][0] == d.sluchay.otd.naim:
                 if d.sluchay.le_vr and d.sluchay.le_vr.prof_k:
                     for p in range(len(otds_prof_list[otds_prof][1])):
                         if otds_prof_list[otds_prof][1][p][0] == d.sluchay.le_vr.prof_k.k_prname:
                             otds_prof_list[otds_prof][1][p][1].append(d)
-
+    print(qwe)
     return otds_prof_list
 
 def get_rez_rep_4(data,d=None):
