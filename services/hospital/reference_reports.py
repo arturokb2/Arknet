@@ -300,6 +300,7 @@ def get_list_oper(data):
 
 
 def get_list_otd_prof(data):
+    print('')
     otds_list = []
     qwe = []
     for d in data:
